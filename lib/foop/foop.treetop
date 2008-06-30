@@ -1,0 +1,23 @@
+grammar FoopGrammar
+
+  # rule assignments
+  #   (blank_line / assignment)*
+  # end
+
+  rule assignment
+    lhs:variable whitespace* "=" whitespace* rhs:variable <Node>
+  end
+
+  rule variable
+    [a-z]+ <Node>
+  end
+
+  rule whitespace
+    [ ] <Node>
+  end
+
+  rule blank_line
+    whitespace* <Node>
+  end
+
+end
