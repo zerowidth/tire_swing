@@ -1,0 +1,25 @@
+module AssignmentsLanguage
+  grammar Grammar
+
+    rule assignments
+      ( blank_line / assignment )* <Assignments>
+    end
+
+    rule assignment
+      lhs:variable whitespace* "=" whitespace* rhs:variable <Assignment>
+    end
+
+    rule variable
+      [a-z]+
+    end
+
+    rule whitespace
+      [ \t]
+    end
+
+    rule blank_line
+      whitespace* [\n] <BlankLine>
+    end
+
+  end
+end

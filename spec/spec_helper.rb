@@ -1,8 +1,4 @@
-# $Id$
-
-require File.expand_path(File.join(File.dirname(__FILE__), %w[.. lib foop]))
-
-require "pp"
+require File.expand_path(File.join(File.dirname(__FILE__), %w[.. lib treehouse]))
 
 Spec::Runner.configure do |config|
   # == Mock Framework
@@ -14,5 +10,3 @@ Spec::Runner.configure do |config|
   # config.mock_with :flexmock
   # config.mock_with :rr
 end
-
-# EOF
