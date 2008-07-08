@@ -16,6 +16,13 @@ describe Treehouse::Visitor do
     it "takes a node name and a block" do
       @visitor.visits(Foo) { "foo!" }
     end
+
+    it "can create a visitor for multiple classes at once" do
+      @visitor.visits(Foo, Bar) { "foo!" }
+      @visitor.visit(Foo.new).should == "foo!"
+      @visitor.visit(Bar.new).should == "foo!"
+    end
+
   end
 
   describe "#visit" do

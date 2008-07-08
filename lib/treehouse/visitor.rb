@@ -3,8 +3,10 @@ module Treehouse
   class Visitor
 
     class << self
-      def visits(constant, &blk)
-        nodes[constant] = (blk || lambda {})
+      def visits(*constants, &blk)
+        constants.each do |constant|
+          nodes[constant] = (blk || lambda {})
+        end
       end
 
       def nodes

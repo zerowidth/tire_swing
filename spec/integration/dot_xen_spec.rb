@@ -27,3 +27,60 @@ describe DotXen::Parser, ".parse" do
   end
 
 end
+
+describe DotXen::HashVisitor do
+  before(:all) do
+    data = File.read(Treehouse.path(%w(spec fixtures ey00-s00348.xen)))
+    @ast = DotXen::Parser.parse(data)
+  end
+
+  describe ".visit" do
+    it "returns a hash representation of the AST" do
+      DotXen::HashVisitor.visit(@ast).should == {
+        :comments => ["  -*- mode: python; -*-"],
+        :disks => [
+          "phy:/dev/ey00-data4/root-s00348,sda1,w",
+          "phy:/dev/ey00-data4/swap-s00348,sda2,w",
+          "phy:/dev/ey00-data4/gfs-00218,sdb1,w!"
+        ],
+        :vars => {
+          "name" => "ey00-s00348",
+          "kernel" => "/boot/vmlinuz-2.6.18-xenU",
+          "memory" => 712,
+          "cpu_cap" => 100,
+          "vcpus" => 1,
+          "root" => "/dev/sda1 ro",
+          "maxmem" => 4096,
+          "vif" => ["bridge=xenbr0"]
+        }
+      }
+    end
+  end
+end
+
+describe DotXen::StringVisitor do
+  before(:all) do
+    data = File.read(Treehouse.path(%w(spec fixtures ey00-s00348.xen)))
+    @ast = DotXen::Parser.parse(data)
+  end
+  describe ".visit" do
+    it "returns a string representation of the AST" do
+          DotXen::StringVisitor.visit(@ast).should == <<-EOS
+#   -*- mode: python; -*-
+kernel = '/boot/vmlinuz-2.6.18-xenU'
+memory = 712
+maxmem = 4096
+name = 'ey00-s00348'
+vif = [ 'bridge=xenbr0' ]
+root = "/dev/sda1 ro"
+vcpus = 1
+cpu_cap = 100
+disk = [
+  "phy:/dev/ey00-data4/root-s00348,sda1,w",
+  "phy:/dev/ey00-data4/swap-s00348,sda2,w",
+  "phy:/dev/ey00-data4/gfs-00218,sdb1,w!"
+]
+      EOS
+    end
+  end
+end

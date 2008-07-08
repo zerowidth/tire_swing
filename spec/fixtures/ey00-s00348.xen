@@ -9,6 +9,6 @@ disk = [
         'phy:/dev/ey00-data4/swap-s00348,sda2,w',
         'phy:/dev/ey00-data4/gfs-00218,sdb1,w!',
        ]
-root = '/dev/sda1 ro'
+root = "/dev/sda1 ro"
 vcpus = 1
 cpu_cap = 100

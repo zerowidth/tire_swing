@@ -63,12 +63,12 @@ module DotXen
       } /
       '"' (!'"' . / '\"')* '"' {
         def eval(env={})
-          LiteralString.new(:value => elements[1].text_value)
+          AST::DoubleQuotedString.new(:value => elements[1].text_value)
         end
       } /
       "'" (!"'" .)* "'" {
         def eval(env={})
-          AST::LiteralString.new(:value => elements[1].text_value)
+          AST::SingleQuotedString.new(:value => elements[1].text_value)
         end
       }
     end
