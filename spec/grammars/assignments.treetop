@@ -2,15 +2,27 @@ module AssignmentsLanguage
   grammar Grammar
 
     rule assignments
-      ( blank_line / assignment )* <Assignments>
+      ( blank_line / assignment )* {
+        def eval
+          Assignments.new :assignments => elements.map {|child| child.eval}
+        end
+      }
     end
 
     rule assignment
-      lhs:variable whitespace* "=" whitespace* rhs:variable <Assignment>
+      lhs:variable whitespace* "=" whitespace* rhs:variable {
+        def eval
+          Assignment.new(:lhs => lhs.eval, :rhs => rhs.eval)
+        end
+      }
     end
 
     rule variable
-      [a-z]+ <Variable>
+      [a-z]+ {
+        def eval
+          Variable.new( :value => text_value)
+        end
+      }
     end
 
     rule whitespace
@@ -18,7 +30,11 @@ module AssignmentsLanguage
     end
 
     rule blank_line
-      whitespace* [\n] <BlankLine>
+      whitespace* [\n] {
+        def eval
+          BlankLine.new
+        end
+      }
     end
 
   end

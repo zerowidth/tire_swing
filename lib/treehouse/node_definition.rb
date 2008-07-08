@@ -1,29 +1,27 @@
 module Treehouse::NodeDefinition
 
   module NodeClassMethods
-    def eval(&blk)
-      define_method(:eval, &blk) if block_given?
-      public :eval
+    def traverse(&blk)
+      define_method(:traverse, &blk) if block_given?
     end
   end
 
   module ModuleMethods
 
-    def node(name, parent = Treetop::Runtime::SyntaxNode, &blk)
-      klass = Class.new(parent)
+    def node(name, *attribute_names, &blk)
+      klass = Treehouse::Node.create *attribute_names
       const_set name.to_s.camelize, klass
       klass.extend(NodeClassMethods)
       klass.class_eval &blk if block_given?
-      ensure_presence_of_eval(klass)
+      ensure_presence_of_traverse(klass)
     end
 
     private
 
-    def ensure_presence_of_eval(klass)
-      unless klass.public_instance_methods.include?("eval")
+    def ensure_presence_of_traverse(klass)
+      unless klass.instance_methods.include?("traverse")
         klass.class_eval do
-          define_method(:eval) {}
-          public :eval
+          define_method(:traverse) {}
         end
       end
     end

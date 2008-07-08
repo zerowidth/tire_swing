@@ -23,7 +23,7 @@ module Treehouse
       protected
 
       def visitor_for(node)
-        nodes[node.class] or raise "could not find visitor definition for #{node.class}"
+        nodes[node.class] or raise "could not find visitor definition for #{node.class}: #{node.inspect}"
       end
 
     end

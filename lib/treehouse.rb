@@ -45,5 +45,6 @@ end  # module Foop
 
 require "rubygems"
 gem "activesupport"
-%w(active_support/core_ext/string treetop).each { |lib| require lib }
+gem "attributes"
+%w(active_support/core_ext/string attributes treetop).each { |lib| require lib }
 Treehouse.require_all_libs_relative_to __FILE__

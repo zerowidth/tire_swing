@@ -11,7 +11,7 @@ describe Treehouse::NodeDefinition do
 
   describe ".node" do
     before(:each) do
-      TestNodes.class_eval { node :foo }
+      TestNodes.class_eval { node :foo, :bar, :baz }
     end
     after(:each) do
       TestNodes.send(:remove_const, "Foo")
@@ -19,29 +19,30 @@ describe Treehouse::NodeDefinition do
 
     it "defines a class" do
       TestNodes.constants.should include("Foo")
+      TestNodes::Foo.ancestors.should include(Treehouse::Node)
     end
 
-    it "defines a class that inherits from a Treetop syntax node" do
-      TestNodes.const_get("Foo").ancestors.should include(Treetop::Runtime::SyntaxNode)
+    it "defines a class with a traverse class method" do
+      TestNodes.const_get("Foo").methods.should include("traverse")
     end
 
-    it "defines a class with an eval class method" do
-      TestNodes.const_get("Foo").methods.should include("eval")
+    it "defines a class with an attribute for each of the provided arguments" do
+      TestNodes::Foo.instance_methods.should include("bar")
+      TestNodes::Foo.instance_methods.should include("baz")
     end
 
-    # it occurs to me that overwriting eval is a bad idea....
-    describe "without an eval block" do
-      it "defines a public eval method on the node" do
-        TestNodes.class_eval { node :no_eval }
-        TestNodes.const_get("NoEval").public_instance_methods.should include("eval")
+    describe "without a traverse block" do
+      it "defines a traverse method on the node" do
+        TestNodes.class_eval { node :no_traverse }
+        TestNodes.const_get("NoTraverse").public_instance_methods.should include("traverse")
       end
     end
 
-    describe "with an eval block" do
-      it "defines a public eval method with the given block" do
-        TestNodes.class_eval { node(:with_eval) { eval { |arg| "xx_#{arg}_#{text_value}_xx"} } }
-        node = TestNodes.const_get("WithEval").new("what", 0..3)
-        node.eval("asdf").should == "xx_asdf_what_xx"
+    describe "with a traverse block" do
+      it "defines a traverse method with the given block" do
+        TestNodes.class_eval { node(:with_traverse, :value) { traverse { |arg| "xx_#{arg}_#{value}_xx"} } }
+        node = TestNodes.const_get("WithTraverse").new(:value => "what")
+        node.traverse("asdf").should == "xx_asdf_what_xx"
       end
     end
 

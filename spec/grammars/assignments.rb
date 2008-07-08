@@ -4,24 +4,24 @@ module AssignmentsLanguage
   module Grammar
     include Treehouse::NodeDefinition
 
-    node :assignments do
-      eval do
+    node :assignments, :assignments do
+      traverse do
         env = {}
-        elements.each { |child| child.eval(env) }
+        assignments.each { |child| child.traverse(env) }
         env
       end
     end
 
-    node :assignment do
-      eval do |env|
-        env[lhs.eval] = rhs.eval
+    node :assignment, :lhs, :rhs do
+      traverse do |env|
+        env[lhs.traverse] = rhs.traverse
       end
     end
 
     node :blank_line
-    node :variable do
-      eval do
-        text_value
+    node :variable, :value do
+      traverse do
+        value
       end
     end
 
@@ -31,7 +31,7 @@ module AssignmentsLanguage
 
   visitor :string_visitor do
     visits Grammar::Assignments do |assignments|
-      assignments.elements.map { |child| visit(child) }.compact.join("")
+      assignments.assignments.map { |child| visit(child) }.compact.join("")
     end
     visits Grammar::Assignment do |assignment|
       visit(assignment.lhs) + " = " + visit(assignment.rhs) + "\n"
@@ -40,14 +40,14 @@ module AssignmentsLanguage
       nil
     end
     visits Grammar::Variable do |variable|
-      variable.text_value
+      variable.value
     end
   end
 
   class Parser < ::Treetop::Runtime::CompiledParser
     include Grammar
     def self.parse(io)
-      new.parse(io)
+      new.parse(io).eval
     end
   end
 
