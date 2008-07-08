@@ -1,10 +1,10 @@
-Foop or Treehouse or whatever
+Treehouse
     by Nathan Witmer
-    http://github.com/aniero/
+    http://github.com/aniero/treehouse
 
 == DESCRIPTION:
 
-FIXME (describe your package)
+Simple node and visitor definitions for Treetop grammars
 
 == FEATURES/PROBLEMS:
 

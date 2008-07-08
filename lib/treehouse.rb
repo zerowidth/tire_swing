@@ -1,4 +1,4 @@
-module Foop
+module Treehouse
 
   # :stopdoc:
   VERSION = '1.0.0'
@@ -46,4 +46,4 @@ end  # module Foop
 require "rubygems"
 gem "activesupport"
 %w(active_support/core_ext/string treetop).each { |lib| require lib }
-Foop.require_all_libs_relative_to __FILE__
+Treehouse.require_all_libs_relative_to __FILE__
