@@ -4,23 +4,34 @@ Treehouse
 
 == DESCRIPTION:
 
-Simple node and visitor definitions for Treetop grammars
+Simple node and visitor definitions for Treetop grammars.
 
 == FEATURES/PROBLEMS:
 
-* FIXME (list of features or problems)
+* Simple node definition syntax for defining an AST
+* Simple visitor definition to walk an AST
 
 == SYNOPSIS:
 
-  FIXME (code sample of usage)
+  $ cat examples/simple_assignment.rb
+  ...
+  $ ruby examples/simple_assignment.rb
+  ----- AST -----
+  #<SimpleAssignment::AST::Assignment:0x12529b0
+   @lhs=#<SimpleAssignment::AST::Literal:0x1252974 @value="foo">,
+   @rhs=#<SimpleAssignment::AST::Literal:0x1252910 @value="bar">>
 
+  ----- visitor output -----
+  {"foo"=>"bar"}
+  
 == REQUIREMENTS:
 
-* FIXME (list of requirements)
+* treetop
+* attributes
 
 == INSTALL:
 
-* FIXME (sudo gem install, anything else)
+* sudo gem install aniero-treehouse -s http://gems.github.com
 
 == LICENSE:
 

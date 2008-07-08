@@ -2,6 +2,7 @@ History.txt
 Manifest.txt
 README.txt
 Rakefile
+examples/simple_assignment.rb
 lib/treehouse.rb
 lib/treehouse/node.rb
 lib/treehouse/node_definition.rb
@@ -33,4 +34,4 @@ tasks/setup.rb
 tasks/spec.rake
 tasks/svn.rake
 tasks/test.rake
-treehouse.tmproj
+treehouse.gemspec

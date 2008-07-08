@@ -9,11 +9,12 @@ require 'treehouse'
 
 task :default => 'spec:run'
 
-PROJ.name = 'foop'
-PROJ.authors = 'FIXME (who is writing this software)'
-PROJ.email = 'FIXME (your e-mail)'
-PROJ.url = 'FIXME (project homepage)'
-PROJ.rubyforge.name = 'foop'
+PROJ.name = 'treehouse'
+PROJ.authors = 'Nathan Witmer'
+PROJ.email = 'nwitmer at gmail dot com'
+PROJ.url = 'http://github.com/aniero/treehouse'
+PROJ.rubyforge.name = ''
+PROJ.version = Treehouse.version
 
 PROJ.spec.opts << '--color --format specdoc'
 
