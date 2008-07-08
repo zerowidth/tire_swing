@@ -10,7 +10,7 @@ module AssignmentsLanguage
     end
 
     rule variable
-      [a-z]+
+      [a-z]+ <Variable>
     end
 
     rule whitespace

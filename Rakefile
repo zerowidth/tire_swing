@@ -5,7 +5,7 @@
 load 'tasks/setup.rb'
 
 ensure_in_path 'lib'
-require 'foop'
+require 'treehouse'
 
 task :default => 'spec:run'
 

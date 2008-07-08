@@ -3,7 +3,6 @@ Treetop.load(File.join(File.dirname(__FILE__), "assignments.treetop"))
 module AssignmentsLanguage
   module Grammar
     include Treehouse::NodeDefinition
-    include Treehouse::VisitorDefinition
 
     node :assignments do
       eval do
@@ -15,11 +14,34 @@ module AssignmentsLanguage
 
     node :assignment do
       eval do |env|
-        env[lhs.text_value] = rhs.text_value
+        env[lhs.eval] = rhs.eval
       end
     end
 
     node :blank_line
+    node :variable do
+      eval do
+        text_value
+      end
+    end
+
+  end
+
+  include Treehouse::VisitorDefinition
+
+  visitor :string_visitor do
+    visits Grammar::Assignments do |assignments|
+      assignments.elements.map { |child| visit(child) }.compact.join("")
+    end
+    visits Grammar::Assignment do |assignment|
+      visit(assignment.lhs) + " = " + visit(assignment.rhs) + "\n"
+    end
+    visits Grammar::BlankLine do
+      nil
+    end
+    visits Grammar::Variable do |variable|
+      variable.text_value
+    end
   end
 
   class Parser < ::Treetop::Runtime::CompiledParser
