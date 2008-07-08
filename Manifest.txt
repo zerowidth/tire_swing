@@ -8,9 +8,13 @@ lib/treehouse/node_definition.rb
 lib/treehouse/visitor.rb
 lib/treehouse/visitor_definition.rb
 spec/fixtures/assignments.txt
+spec/fixtures/ey00-s00348.xen
 spec/grammars/assignments.rb
 spec/grammars/assignments.treetop
+spec/grammars/dot_xen.rb
+spec/grammars/dot_xen.treetop
 spec/integration/assignments_spec.rb
+spec/integration/dot_xen_spec.rb
 spec/node_definition_spec.rb
 spec/node_spec.rb
 spec/spec_helper.rb

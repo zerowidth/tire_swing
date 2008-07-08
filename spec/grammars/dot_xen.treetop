@@ -1,0 +1,100 @@
+module DotXen
+  grammar Grammar
+    rule config_file
+      (comment / blank_line / assignment)* {
+        def eval
+          env = {:vars => [], :comments => []}
+          elements.each { |e| e.eval(env) }
+          env[:disks] = AST::Disk.build(env[:vars])
+          AST::ConfigFile.new(env)
+        end
+      }
+    end
+
+    rule assignment
+      space_no_newline* lhs:variable space_no_newline* '=' space_no_newline* rhs:variable space* comment* {
+        def eval(env={})
+          env[:vars] << AST::Assignment.new(:lhs => lhs.eval, :rhs => rhs.eval)
+        end
+      }
+      /
+      space_no_newline* lhs:variable space_no_newline* '=' space_no_newline* '[' space* rhs:array_list space* ']' space* comment* {
+        def eval(env={})
+          env[:vars] << AST::ArrayAssignment.new(:lhs => lhs.eval, :rhs => rhs.eval)
+        end
+      }
+    end
+
+    rule array_list
+      space* value:(variable/comment) ','? space* remains:(space* var:array_list space* ','?)* {
+        def eval(env={})
+          AST::ArrayList.new :values => [[value.eval] + remains.elements.map { |vars| vars.var.eval.values }].flatten
+        end
+      }
+    end
+
+    rule variable
+      space_no_newline* value:number space* comment* {
+        def eval(env={})
+          value.eval
+        end
+      }
+      /
+      space_no_newline* value:string space* comment* {
+        def eval(env={})
+          value.eval
+        end
+      }
+    end
+
+    rule number
+      [0-9]+ {
+        def eval(env={})
+          AST::LiteralNumber.new(:value => text_value.to_i)
+        end
+      }
+    end
+
+    rule string
+      ([A-Za-z_-])+ {
+        def eval(env={})
+          AST::LiteralString.new(:value => text_value)
+        end
+      } /
+      '"' (!'"' . / '\"')* '"' {
+        def eval(env={})
+          LiteralString.new(:value => elements[1].text_value)
+        end
+      } /
+      "'" (!"'" .)* "'" {
+        def eval(env={})
+          AST::LiteralString.new(:value => elements[1].text_value)
+        end
+      }
+    end
+
+    rule comment
+      space_no_newline* [!\#] value:([^\n])* "\n" space* {
+        def eval(env={})
+          env[:comments] << AST::Comment.new(:text => value.text_value)
+        end
+      }
+    end
+
+    rule blank_line
+      "\n"
+    end
+
+    rule non_space_char
+      ![ \n] .
+    end
+
+    rule space_no_newline
+      [ \t]
+    end
+
+    rule space
+      space_no_newline / "\n"
+    end
+  end
+end
