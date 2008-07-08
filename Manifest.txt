@@ -4,6 +4,7 @@ README.txt
 Rakefile
 lib/treehouse.rb
 lib/treehouse/node_definition.rb
+lib/treehouse/visitor.rb
 lib/treehouse/visitor_definition.rb
 spec/fixtures/assignments.txt
 spec/grammars/assignments.rb
@@ -12,6 +13,7 @@ spec/integration/assignments_spec.rb
 spec/node_definition_spec.rb
 spec/spec_helper.rb
 spec/visitor_definition_spec.rb
+spec/visitor_spec.rb
 tasks/ann.rake
 tasks/bones.rake
 tasks/gem.rake

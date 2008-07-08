@@ -50,7 +50,7 @@ end
 
 describe AssignmentsLanguage do
   it "has a string visitor defined" do
-    AssignmentsLanguage.const_get("StringVisitor").ancestors.should include(Treehouse::VisitorDefinition::Visitor)
+    AssignmentsLanguage.const_get("StringVisitor").ancestors.should include(Treehouse::Visitor)
   end
 end
 
