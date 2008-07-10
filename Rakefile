@@ -19,3 +19,6 @@ PROJ.version = Treehouse.version
 PROJ.spec.opts << '--color --format specdoc'
 
 # EOF
+
+depend_on "attributes"
+depend_on "activesupport"
