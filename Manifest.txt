@@ -24,6 +24,7 @@ spec/node_creator_spec.rb
 spec/node_definition_spec.rb
 spec/node_spec.rb
 spec/spec_helper.rb
+spec/treehouse_spec.rb
 spec/visitor_definition_spec.rb
 spec/visitor_spec.rb
 tasks/ann.rake
