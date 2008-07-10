@@ -1,4 +1,28 @@
-Treetop.load(File.join(File.dirname(__FILE__), "magic.treetop"))
+# This demonstrates a grammar making full use of Treehouse's magic nodes to build an AST.
+
+Treetop.load_from_string <<-GRAMMAR
+
+module MagicAssignments
+  grammar Grammar
+    rule assignments
+      ( blank_line / assignment )* <AST.create_node(:assignments)>
+    end
+    rule assignment
+      lhs:variable whitespace* "=" whitespace* rhs:variable [\\n] <AST.create_node(:assignment)>
+    end
+    rule variable
+      [a-z]+ <AST.create_node(:variable)>
+    end
+    rule whitespace
+      [ ]
+    end
+    rule blank_line
+      whitespace* [\\n] <AST.create_node(:blank_line)>
+    end
+  end
+end
+
+GRAMMAR
 
 module MagicAssignments
   module AST

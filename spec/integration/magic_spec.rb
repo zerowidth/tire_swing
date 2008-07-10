@@ -9,10 +9,19 @@ describe MagicAssignments::Parser do
       @result = MagicAssignments::Parser.parse(@input)
     end
 
-    it "actually works" do
+    it "returns an AST" do
       @result.should be_an_instance_of(MagicAssignments::AST::Assignments)
+    end
+
+    it "has the right number of nodes" do
+      @result.should have(7).assignments
+    end
+
+    it "has an assignment with correct values" do
       @result.assignments.first.should be_an_instance_of(MagicAssignments::AST::Assignment)
       @result.assignments.first.lhs.value.should == "foo"
+      @result.assignments.first.rhs.value.should == "bar"
     end
+
   end
 end
