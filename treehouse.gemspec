@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{treehouse}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nathan Witmer"]
@@ -22,13 +22,16 @@ Gem::Specification.new do |s|
     s.specification_version = 2
 
     if current_version >= 3 then
+      s.add_runtime_dependency(%q<treetop>, [">= 1.2.4"])
       s.add_runtime_dependency(%q<attributes>, [">= 5.0.1"])
       s.add_runtime_dependency(%q<activesupport>, [">= 2.1.0"])
     else
+      s.add_dependency(%q<treetop>, [">= 1.2.4"])
       s.add_dependency(%q<attributes>, [">= 5.0.1"])
       s.add_dependency(%q<activesupport>, [">= 2.1.0"])
     end
   else
+    s.add_dependency(%q<treetop>, [">= 1.2.4"])
     s.add_dependency(%q<attributes>, [">= 5.0.1"])
     s.add_dependency(%q<activesupport>, [">= 2.1.0"])
   end

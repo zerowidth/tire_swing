@@ -20,5 +20,6 @@ PROJ.spec.opts << '--color --format specdoc'
 
 # EOF
 
+depend_on "treetop"
 depend_on "attributes"
 depend_on "activesupport"
