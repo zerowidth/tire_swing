@@ -13,21 +13,64 @@ Simple node and visitor definitions for Treetop grammars.
 
 == SYNOPSIS:
 
-  $ cat examples/simple_assignment.rb
-  ...
-  $ ruby examples/simple_assignment.rb
-  ----- AST -----
-  #<SimpleAssignment::AST::Assignment:0x12529b0
-   @lhs=#<SimpleAssignment::AST::Literal:0x1252974 @value="foo">,
-   @rhs=#<SimpleAssignment::AST::Literal:0x1252910 @value="bar">>
+Given a treetop grammar:
 
-  ----- visitor output -----
-  {"foo"=>"bar"}
-  
+  grammar SimpleAssignment
+    rule assignment
+      lhs:variable space* "=" space* rhs:variable <create_node(:assignment)>
+    end
+    rule variable
+      [a-z]+ <create_node(:variable)>
+    end
+    rule space
+      [ ]+
+    end
+  end
+
+You can use Treehouse to define nodes for the grammar:
+
+  module SimpleAssignment
+    include Treehouse::NodeDefinition
+
+    node :assignment, :lhs, :rhs
+    node :variable, :value => :text_value
+  end
+
+When you parse the grammar and call .build, it will return an AST using the nodes you defined, auto-building everything
+for you:
+
+  ast = Parser.parse("foo = bar").build
+
+  ast.class #=> SimpleAssignment::Assignment
+  ast.lhs.class #=> SimpleAssignment::Variable
+  ast.lhs.value #=> "foo"
+
+You can also define visitors for an AST:
+
+  module SimpleAssignment
+    include Treehouse::VisitorDefinition
+
+    visitor :hash_visitor do
+      visits Assignment do |a|
+        hash = {}
+        hash[ visit(lhs) ] = visit(rhs)
+        hash
+      end
+      visits Variable do |v|
+        v.value
+      end
+    end
+  end
+
+  SimpleAssignment::HashVisitor.visit(ast) #=> {"foo" => "bar"}
+
+  See examples/simple_assignment.rb for the full code.
+
 == REQUIREMENTS:
 
 * treetop
 * attributes
+* active_support
 
 == INSTALL:
 

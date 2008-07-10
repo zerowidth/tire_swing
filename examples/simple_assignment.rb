@@ -4,18 +4,13 @@ Treetop.load_from_string <<-GRAMMAR
 module SimpleAssignment
   grammar Grammar
     rule assignment
-      lhs:literal "=" rhs:literal {
-        def eval
-          AST::Assignment.new(:lhs => lhs.eval, :rhs => rhs.eval)
-        end
-      }
+      lhs:variable space* "=" space* rhs:variable <AST.create_node(:assignment)>
     end
-    rule literal
-      [a-zA-Z]+ {
-        def eval
-          AST::Literal.new(:value => text_value)
-        end
-      }
+    rule variable
+      [a-z]+ <AST.create_node(:variable)>
+    end
+    rule space
+      [ ]+
     end
   end
 end
@@ -23,29 +18,29 @@ GRAMMAR
 
 module SimpleAssignment
 
-  # define nodes
+  # Define nodes for the AST
   module AST
     include Treehouse::NodeDefinition
     node :assignment, :lhs, :rhs
-    node :literal, :value
+    node :variable, :value => :text_value
   end
 
   include Treehouse::VisitorDefinition
 
-  # define a simple visitor to walk an AST
+  # Define a simple visitor to walk the AST and build a hash
   visitor :hash_visitor do
     visits AST::Assignment do |assignment|
       { visit(assignment.lhs) => visit(assignment.rhs) }
     end
-    visits AST::Literal do |literal|
-      literal.value
+    visits AST::Variable do |var|
+      var.value
     end
   end
 
   class Parser < ::Treetop::Runtime::CompiledParser
     include Grammar
     def self.parse(io)
-      new.parse(io).eval
+      new.parse(io).build
     end
   end
 
