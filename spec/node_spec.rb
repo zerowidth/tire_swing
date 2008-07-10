@@ -34,7 +34,7 @@ describe Treehouse::Node do
       end
 
       it "creates a class with attributes matching the hash keys" do
-        @node.attributes.should == ["lhs", "rhs"]
+        @node.attributes.sort.should == ["lhs", "rhs"]
       end
 
       it "creates attributes with a default of raising an exception if not set" do
