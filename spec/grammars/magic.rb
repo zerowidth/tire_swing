@@ -37,16 +37,16 @@ module MagicAssignments
 
   include Treehouse::VisitorDefinition
 
-  visitor :string_visitor do
+  visitor :hash_visitor do
     visits AST::Assignments do |assignments|
-      assignments.assignments.map { |child| visit(child) }.compact.join("")
+      hash = {}
+      assignments.assignments.each { |child| visit(child, hash) }
+      hash
     end
-    visits AST::Assignment do |assignment|
-      visit(assignment.lhs) + " = " + visit(assignment.rhs) + "\n"
+    visits AST::Assignment do |assignment, hash|
+      hash[visit(assignment.lhs)] = visit(assignment.rhs)
     end
-    visits AST::BlankLine do
-      nil
-    end
+    visits AST::BlankLine
     visits AST::Variable do |variable|
       variable.value
     end
@@ -60,3 +60,4 @@ module MagicAssignments
   end
 
 end
+

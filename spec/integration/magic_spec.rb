@@ -25,3 +25,16 @@ describe MagicAssignments::Parser do
 
   end
 end
+
+describe MagicAssignments::HashVisitor do
+  describe ".visit" do
+    it "returns a hash representation of the assignments" do
+      ast = MagicAssignments::Parser.parse(File.read(Treehouse.path(%w(spec fixtures assignments.txt))))
+      MagicAssignments::HashVisitor.visit(ast).should == {
+        "foo" => "bar",
+        "baz" => "blech",
+        "no" => "way"
+      }
+    end
+  end
+end
