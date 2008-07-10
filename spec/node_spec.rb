@@ -119,6 +119,12 @@ describe Treehouse::Node do
         @node.new(@top).child.should == ["child value", "blah"]
       end
 
+      it "yields the syntax node instance if a mapped attribute is a lambda" do
+        @node = Treehouse::Node.create(:value => lambda { |x| @x = x })
+        @node.new(@top)
+        @x.should == @top
+      end
+
     end
   end
 

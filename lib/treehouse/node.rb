@@ -40,8 +40,15 @@ module Treehouse
 
     def build_from_parsed_node(parsed_node)
       attributes.each do |attrib|
-        # TODO handle lambda mappings for even more customizability
-        value = mapping(attrib) ? parsed_node.send(mapping(attrib)) : parsed_node.send(attrib)
+        if value = mapping(attrib)
+          if value.kind_of?(Proc)
+            value = value.call(parsed_node)
+          else
+            value = parsed_node.send(mapping(attrib))
+          end
+        else
+          value = parsed_node.send(attrib)
+        end
         value = value.map { |val| val.respond_to?(:build) ? val.build : val } if value.kind_of?(Array)
         value = value.build if value.respond_to?(:build)
         send("#{attrib}=", value)
