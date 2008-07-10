@@ -4,26 +4,10 @@ module AssignmentsLanguage
   module Grammar
     include Treehouse::NodeDefinition
 
-    node :assignments, :assignments do
-      traverse do
-        env = {}
-        assignments.each { |child| child.traverse(env) }
-        env
-      end
-    end
-
-    node :assignment, :lhs, :rhs do
-      traverse do |env|
-        env[lhs.traverse] = rhs.traverse
-      end
-    end
-
+    node :assignments, :assignments
+    node :assignment, :lhs, :rhs
     node :blank_line
-    node :variable, :value do
-      traverse do
-        value
-      end
-    end
+    node :variable, :value
 
   end
 

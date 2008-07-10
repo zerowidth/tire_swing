@@ -13,15 +13,6 @@ describe AssignmentsLanguage::Grammar do
 
 end
 
-describe AssignmentsLanguage::Grammar::Assignments do
-  before(:each) do
-    @a = AssignmentsLanguage::Grammar::Assignments
-  end
-  it "has a traverse instance method" do
-    @a.instance_methods.should include("traverse")
-  end
-end
-
 describe AssignmentsLanguage::Parser, ".parse" do
 
   before(:each) do
@@ -30,20 +21,6 @@ describe AssignmentsLanguage::Parser, ".parse" do
 
   it "parses a file and returns a Treehouse AST" do
     AssignmentsLanguage::Parser.parse(@input).should be_a_kind_of(Treehouse::Node)
-  end
-
-end
-
-describe AssignmentsLanguage::Grammar::Assignments do
-  before(:each) do
-    @input = File.read(Treehouse.path(%w(spec fixtures assignments.txt)))
-    @ast = AssignmentsLanguage::Parser.parse(@input)
-  end
-
-  describe "#traverse on a parsed AST" do
-    it "returns a hash containing the parsed assignments" do
-      @ast.traverse.should == {"foo"=>"bar", "baz"=>"blech", "no"=>"way"}
-    end
   end
 
 end
