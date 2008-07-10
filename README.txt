@@ -37,7 +37,7 @@ Simple node and visitor definitions for Treetop grammars.
 
 (The MIT License)
 
-Copyright (c) 2008 FIXME (different license?)
+Copyright (c) 2008 Nathan Witmer
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
