@@ -26,7 +26,7 @@ namespace :spec do
     Spec::Rake::SpecTask.new(:rcov) do |t|
       t.ruby_opts = PROJ.ruby_opts
       t.spec_opts = PROJ.spec.opts
-      t.spec_files = PROJ.spec.files
+      t.spec_files = PROJ.spec.files.select { |f| f !~ /integration/ }
       t.libs += PROJ.libs
       t.rcov = true
       t.rcov_dir = PROJ.rcov.dir

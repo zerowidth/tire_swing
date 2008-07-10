@@ -17,7 +17,6 @@ spec/grammars/assignments.treetop
 spec/grammars/dot_xen.rb
 spec/grammars/dot_xen.treetop
 spec/grammars/magic.rb
-spec/grammars/magic.treetop
 spec/integration/assignments_spec.rb
 spec/integration/dot_xen_spec.rb
 spec/integration/magic_spec.rb

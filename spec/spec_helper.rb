@@ -9,4 +9,26 @@ Spec::Runner.configure do |config|
   # config.mock_with :mocha
   # config.mock_with :flexmock
   # config.mock_with :rr
+
+  # borrowed from rspec_on_rails' mock_model
+  def mock_syntax_node(stubs={})
+    m = mock "mock syntax node", stubs
+    m.send(:__mock_proxy).instance_eval do
+      def @target.is_a?(other)
+        Treetop::Runtime::SyntaxNode.ancestors.include?(other)
+      end
+      def @target.kind_of?(other)
+        Treetop::Runtime::SyntaxNode.ancestors.include?(other)
+      end
+      def @target.instance_of?(other)
+        other == Treetop::Runtime::SyntaxNode
+      end
+      def @target.class
+        Treetop::Runtime::SyntaxNode
+      end
+    end
+    yield m if block_given?
+    m
+  end
+
 end

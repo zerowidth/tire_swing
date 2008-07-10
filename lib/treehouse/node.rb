@@ -1,6 +1,8 @@
 module Treehouse
   class Node
 
+    # Create a new node class with the given attributes.
+    # 
     def self.create(*attribs)
       Class.new(self) do
         attribs.each do |attrib|
@@ -21,6 +23,9 @@ module Treehouse
       @attribute_mapping ||= {}
     end
 
+    # Instantiate a new AST node.
+    # Values can either be a hash of values (simple case) or a Treetop syntax node instance (automatic building)
+    # 
     def initialize(values={})
       if values.kind_of?(Treetop::Runtime::SyntaxNode)
         build_from_parsed_node(values)
@@ -35,17 +40,11 @@ module Treehouse
 
     def build_from_parsed_node(parsed_node)
       attributes.each do |attrib|
-        if mapping(attrib)
-          value = parsed_node.send(mapping(attrib))
-          if value.kind_of?(Array)
-            value = value.map { |v| v.build }
-          else
-            value = parsed_node.send(mapping(attrib))
-          end
-          send("#{attrib}=", value)
-        else
-          send("#{attrib}=", parsed_node.send(attrib).build)
-        end
+        # TODO handle lambda mappings for even more customizability
+        value = mapping(attrib) ? parsed_node.send(mapping(attrib)) : parsed_node.send(attrib)
+        value = value.map { |val| val.respond_to?(:build) ? val.build : val } if value.kind_of?(Array)
+        value = value.build if value.respond_to?(:build)
+        send("#{attrib}=", value)
       end
     end
 
