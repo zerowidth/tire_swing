@@ -4,7 +4,9 @@ README.txt
 Rakefile
 examples/simple_assignment.rb
 lib/treehouse.rb
+lib/treehouse/metaid.rb
 lib/treehouse/node.rb
+lib/treehouse/node_creator.rb
 lib/treehouse/node_definition.rb
 lib/treehouse/visitor.rb
 lib/treehouse/visitor_definition.rb
@@ -14,8 +16,11 @@ spec/grammars/assignments.rb
 spec/grammars/assignments.treetop
 spec/grammars/dot_xen.rb
 spec/grammars/dot_xen.treetop
+spec/grammars/magic.rb
+spec/grammars/magic.treetop
 spec/integration/assignments_spec.rb
 spec/integration/dot_xen_spec.rb
+spec/integration/magic_spec.rb
 spec/node_definition_spec.rb
 spec/node_spec.rb
 spec/spec_helper.rb

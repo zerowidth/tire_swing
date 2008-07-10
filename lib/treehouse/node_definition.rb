@@ -8,6 +8,10 @@ module Treehouse::NodeDefinition
 
   module ModuleMethods
 
+    def create_node(name)
+      Treehouse::NodeCreator.new(const_get(name.to_s.camelize))
+    end
+
     def node(name, *attribute_names, &blk)
       klass = Treehouse::Node.create *attribute_names
       const_set name.to_s.camelize, klass
