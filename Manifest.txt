@@ -20,6 +20,7 @@ spec/grammars/magic.rb
 spec/integration/assignments_spec.rb
 spec/integration/dot_xen_spec.rb
 spec/integration/magic_spec.rb
+spec/node_creator_spec.rb
 spec/node_definition_spec.rb
 spec/node_spec.rb
 spec/spec_helper.rb
