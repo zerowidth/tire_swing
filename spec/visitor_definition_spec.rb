@@ -32,13 +32,11 @@ describe Treehouse::VisitorDefinition, "when included" do
       @nodes.const_get("Printer").methods.should include("visits")
     end
 
-    it "takes a block with which to define visitors" do
+    it "takes a block with which to define visitors and evaluates it in the context of the new visitor class" do
       @nodes.class_eval do
-        visitor :printer do
-          visits Foo
-        end
+        def what; end
       end
-      @nodes.const_get("Printer").nodes.keys.should include(@nodes.const_get("Foo"))
+      @nodes.instance_methods.should include("what")
     end
 
   end

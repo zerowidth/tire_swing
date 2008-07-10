@@ -41,10 +41,12 @@ module Treehouse
     Dir.glob(search_me).sort.each {|rb| require rb}
   end
 
-end  # module Foop
+end  # module Treehouse
 
 require "rubygems"
 gem "activesupport"
 gem "attributes"
+
 %w(active_support/core_ext/string attributes treetop).each { |lib| require lib }
+
 Treehouse.require_all_libs_relative_to __FILE__
