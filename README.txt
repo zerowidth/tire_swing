@@ -1,6 +1,6 @@
 TireSwing
     by Nathan Witmer
-    http://github.com/aniero/treehouse
+    http://github.com/aniero/tire_swing
 
 == DESCRIPTION:
 
@@ -74,7 +74,7 @@ You can also define visitors for an AST:
 
 == INSTALL:
 
-* sudo gem install aniero-treehouse -s http://gems.github.com
+* sudo gem install aniero-tire_swing -s http://gems.github.com
 
 == LICENSE:
 

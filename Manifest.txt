@@ -3,13 +3,13 @@ Manifest.txt
 README.txt
 Rakefile
 examples/simple_assignment.rb
-lib/treehouse.rb
-lib/treehouse/metaid.rb
-lib/treehouse/node.rb
-lib/treehouse/node_creator.rb
-lib/treehouse/node_definition.rb
-lib/treehouse/visitor.rb
-lib/treehouse/visitor_definition.rb
+lib/tire_swing.rb
+lib/tire_swing/metaid.rb
+lib/tire_swing/node.rb
+lib/tire_swing/node_creator.rb
+lib/tire_swing/node_definition.rb
+lib/tire_swing/visitor.rb
+lib/tire_swing/visitor_definition.rb
 spec/fixtures/assignments.txt
 spec/fixtures/ey00-s00348.xen
 spec/grammars/assignments.rb
@@ -24,7 +24,7 @@ spec/node_creator_spec.rb
 spec/node_definition_spec.rb
 spec/node_spec.rb
 spec/spec_helper.rb
-spec/treehouse_spec.rb
+spec/tire_swing_spec.rb
 spec/visitor_definition_spec.rb
 spec/visitor_spec.rb
 tasks/ann.rake
@@ -40,4 +40,4 @@ tasks/setup.rb
 tasks/spec.rake
 tasks/svn.rake
 tasks/test.rake
-treehouse.gemspec
+tire_swing.gemspec

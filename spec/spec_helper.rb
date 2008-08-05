@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__), %w[.. lib treehouse]))
+require File.expand_path(File.join(File.dirname(__FILE__), %w[.. lib tire_swing]))
 
 Spec::Runner.configure do |config|
   # == Mock Framework

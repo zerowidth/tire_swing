@@ -1,4 +1,4 @@
-require TireSwing.libpath(%w(treehouse visitor))
+require TireSwing.libpath(%w(tire_swing visitor))
 
 module TireSwing::VisitorDefinition
 

@@ -5,14 +5,14 @@
 load 'tasks/setup.rb'
 
 ensure_in_path 'lib'
-require 'treehouse'
+require 'tire_swing'
 
 task :default => 'spec:run'
 
-PROJ.name = 'treehouse'
+PROJ.name = 'tire_swing'
 PROJ.authors = 'Nathan Witmer'
 PROJ.email = 'nwitmer at gmail dot com'
-PROJ.url = 'http://github.com/aniero/treehouse'
+PROJ.url = 'http://github.com/aniero/tire_swing'
 PROJ.rubyforge.name = ''
 PROJ.version = TireSwing.version
 

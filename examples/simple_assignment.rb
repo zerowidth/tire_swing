@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), "..", "lib", "treehouse")
+require File.join(File.dirname(__FILE__), "..", "lib", "tire_swing")
 
 Treetop.load_from_string <<-GRAMMAR
 module SimpleAssignment
