@@ -1,4 +1,4 @@
-# This demonstrates a grammar making full use of Treehouse's magic nodes to build an AST.
+# This demonstrates a grammar making full use of TireSwing's magic nodes to build an AST.
 
 Treetop.load_from_string <<-GRAMMAR
 
@@ -26,7 +26,7 @@ GRAMMAR
 
 module MagicAssignments
   module AST
-    include Treehouse::NodeDefinition
+    include TireSwing::NodeDefinition
 
     node :assignments, :assignments => :elements
     node :assignment, :lhs, :rhs
@@ -35,7 +35,7 @@ module MagicAssignments
 
   end
 
-  include Treehouse::VisitorDefinition
+  include TireSwing::VisitorDefinition
 
   visitor :hash_visitor do
     visits AST::Assignments do |assignments|

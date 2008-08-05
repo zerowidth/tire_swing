@@ -20,12 +20,12 @@ module SimpleAssignment
 
   # Define nodes for the AST
   module AST
-    include Treehouse::NodeDefinition
+    include TireSwing::NodeDefinition
     node :assignment, :lhs, :rhs
     node :variable, :value => :text_value
   end
 
-  include Treehouse::VisitorDefinition
+  include TireSwing::VisitorDefinition
 
   # Define a simple visitor to walk the AST and build a hash
   visitor :hash_visitor do

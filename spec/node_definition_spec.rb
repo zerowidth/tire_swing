@@ -1,8 +1,8 @@
 require File.join(File.dirname(__FILE__), %w[spec_helper])
 
-describe Treehouse::NodeDefinition do
+describe TireSwing::NodeDefinition do
   module TestNodes
-    include Treehouse::NodeDefinition
+    include TireSwing::NodeDefinition
   end
 
   it "adds a node method when included" do
@@ -23,7 +23,7 @@ describe Treehouse::NodeDefinition do
 
     it "defines a class" do
       TestNodes.constants.should include("Foo")
-      TestNodes::Foo.ancestors.should include(Treehouse::Node)
+      TestNodes::Foo.ancestors.should include(TireSwing::Node)
     end
 
     it "defines a class with an attribute for each of the provided arguments" do
@@ -46,12 +46,12 @@ describe Treehouse::NodeDefinition do
     end
 
     it "returns an instance of NodeCreator" do
-      TestNodes.create_node(:foo_node).should be_an_instance_of(Treehouse::NodeCreator)
+      TestNodes.create_node(:foo_node).should be_an_instance_of(TireSwing::NodeCreator)
     end
 
     it "instantiates the node creator with the class corresponding to the node name" do
       obj = Object.new
-      Treehouse::NodeCreator.should_receive(:new).with(TestNodes::FooNode).and_return(obj)
+      TireSwing::NodeCreator.should_receive(:new).with(TestNodes::FooNode).and_return(obj)
       TestNodes.create_node(:foo_node).should == obj
     end
 

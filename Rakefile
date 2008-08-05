@@ -14,7 +14,7 @@ PROJ.authors = 'Nathan Witmer'
 PROJ.email = 'nwitmer at gmail dot com'
 PROJ.url = 'http://github.com/aniero/treehouse'
 PROJ.rubyforge.name = ''
-PROJ.version = Treehouse.version
+PROJ.version = TireSwing.version
 
 PROJ.spec.opts << '--color --format specdoc'
 

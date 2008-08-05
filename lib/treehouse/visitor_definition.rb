@@ -1,6 +1,6 @@
-require Treehouse.libpath(%w(treehouse visitor))
+require TireSwing.libpath(%w(treehouse visitor))
 
-module Treehouse::VisitorDefinition
+module TireSwing::VisitorDefinition
 
   module ModuleMethods
 
@@ -11,8 +11,8 @@ module Treehouse::VisitorDefinition
     # Creates StringVisitor in the local scope.
     #
     # This method takes a block, which is evaluated in the context of the new visitor class. Since the visitor
-    # class is a subclass of Treehouse::Visitor, you have node visitor definition methods available.
-    # (See Treehouse::Visitor)
+    # class is a subclass of TireSwing::Visitor, you have node visitor definition methods available.
+    # (See TireSwing::Visitor)
     #
     # Given an AST built with
     #
@@ -36,7 +36,7 @@ module Treehouse::VisitorDefinition
     #   HashVisitor.visit( assignment_node )
     #
     def visitor(name, &blk)
-      klass = Class.new(Treehouse::Visitor)
+      klass = Class.new(TireSwing::Visitor)
       const_set name.to_s.camelize, klass
       klass.class_eval &blk if block_given?
     end

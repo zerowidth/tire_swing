@@ -1,4 +1,4 @@
-module Treehouse
+module TireSwing
   class NodeCreator
 
     # Creates a node creator for the given node class. This is meant to act as a stand-in for the treetop

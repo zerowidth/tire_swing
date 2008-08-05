@@ -1,10 +1,10 @@
 require File.join(File.dirname(__FILE__), %w[.. spec_helper])
 
-require Treehouse.path(%w(spec grammars dot_xen))
+require TireSwing.path(%w(spec grammars dot_xen))
 
 describe DotXen::Parser, ".parse" do
   before(:each) do
-    data = File.read(Treehouse.path(%w(spec fixtures ey00-s00348.xen)))
+    data = File.read(TireSwing.path(%w(spec fixtures ey00-s00348.xen)))
     @ast = DotXen::Parser.parse(data)
   end
   it "returns an AST" do
@@ -30,7 +30,7 @@ end
 
 describe DotXen::HashVisitor do
   before(:all) do
-    data = File.read(Treehouse.path(%w(spec fixtures ey00-s00348.xen)))
+    data = File.read(TireSwing.path(%w(spec fixtures ey00-s00348.xen)))
     @ast = DotXen::Parser.parse(data)
   end
 
@@ -60,7 +60,7 @@ end
 
 describe DotXen::StringVisitor do
   before(:all) do
-    data = File.read(Treehouse.path(%w(spec fixtures ey00-s00348.xen)))
+    data = File.read(TireSwing.path(%w(spec fixtures ey00-s00348.xen)))
     @ast = DotXen::Parser.parse(data)
   end
   describe ".visit" do

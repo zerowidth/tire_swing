@@ -1,6 +1,6 @@
-module Treehouse
+module TireSwing
 
-  # Represents a visitor for an AST. See Treehouse::VisitorDefinition more more information.
+  # Represents a visitor for an AST. See TireSwing::VisitorDefinition more more information.
   #
   class Visitor
 

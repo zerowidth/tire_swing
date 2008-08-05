@@ -2,7 +2,7 @@ Treetop.load(File.join(File.dirname(__FILE__), "assignments.treetop"))
 
 module AssignmentsLanguage
   module Grammar
-    include Treehouse::NodeDefinition
+    include TireSwing::NodeDefinition
 
     node :assignments, :assignments
     node :assignment, :lhs, :rhs
@@ -11,7 +11,7 @@ module AssignmentsLanguage
 
   end
 
-  include Treehouse::VisitorDefinition
+  include TireSwing::VisitorDefinition
 
   visitor :string_visitor do
     visits Grammar::Assignments do |assignments|

@@ -1,10 +1,10 @@
 require File.join(File.dirname(__FILE__), %w[spec_helper])
 
-describe Treehouse::Visitor do
+describe TireSwing::Visitor do
   before(:each) do
     Object.const_set("Foo", Class.new)
     Object.const_set("Bar", Class.new)
-    @visitor = Class.new(Treehouse::Visitor)
+    @visitor = Class.new(TireSwing::Visitor)
   end
 
   after(:each) do

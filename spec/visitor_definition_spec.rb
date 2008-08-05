@@ -1,10 +1,10 @@
 require File.join(File.dirname(__FILE__), %w[spec_helper])
 
-describe Treehouse::VisitorDefinition, "when included" do
+describe TireSwing::VisitorDefinition, "when included" do
   before(:each) do
     @nodes = Module.new
     @nodes.class_eval do
-      include Treehouse::VisitorDefinition
+      include TireSwing::VisitorDefinition
     end
     Object.const_set("Foo", Class.new)
   end
@@ -24,7 +24,7 @@ describe Treehouse::VisitorDefinition, "when included" do
 
     it "defines a class that inherits from a Visitor" do
       @nodes.class_eval { visitor :printer }
-      @nodes.const_get("Printer").ancestors.should include(Treehouse::Visitor)
+      @nodes.const_get("Printer").ancestors.should include(TireSwing::Visitor)
     end
 
     it "defines a class with a visits class method" do

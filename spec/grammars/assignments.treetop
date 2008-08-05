@@ -1,4 +1,4 @@
-# This demonstrates a grammar using inline evals to use Treetop to build an external Treehouse-based AST.
+# This demonstrates a grammar using inline evals to use Treetop to build an external TireSwing-based AST.
 module AssignmentsLanguage
   grammar Grammar
 

@@ -2,7 +2,7 @@ Treetop.load(File.join(File.dirname(__FILE__), "dot_xen.treetop"))
 
 module DotXen
   module AST
-    include Treehouse::NodeDefinition
+    include TireSwing::NodeDefinition
 
     node :config_file, :disks, :vars, :comments
     node :assignment, :lhs, :rhs
@@ -34,7 +34,7 @@ module DotXen
 
   end
 
-  include Treehouse::VisitorDefinition
+  include TireSwing::VisitorDefinition
 
   visitor :hash_visitor do
     visits(AST::ConfigFile) do |config_file|

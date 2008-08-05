@@ -1,4 +1,4 @@
-module Treehouse
+module TireSwing
 
   # :stopdoc:
   VERSION = '0.0.2'
@@ -41,7 +41,7 @@ module Treehouse
     Dir.glob(search_me).sort.each {|rb| require rb}
   end
 
-end  # module Treehouse
+end  # module TireSwing
 
 require "rubygems"
 gem "activesupport"
@@ -49,4 +49,4 @@ gem "attributes"
 
 %w(active_support/core_ext/string attributes treetop).each { |lib| require lib }
 
-Treehouse.require_all_libs_relative_to __FILE__
+TireSwing.require_all_libs_relative_to __FILE__

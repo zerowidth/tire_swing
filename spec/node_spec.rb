@@ -1,17 +1,17 @@
 require File.join(File.dirname(__FILE__), %w[spec_helper])
 
-describe Treehouse::Node do
+describe TireSwing::Node do
 
   describe ".create" do
-    it "returns a class that inherits from Treehouse::Node" do
-      klass = Treehouse::Node.create
+    it "returns a class that inherits from TireSwing::Node" do
+      klass = TireSwing::Node.create
       klass.should be_an_instance_of(Class)
-      klass.ancestors.should include(Treehouse::Node)
+      klass.ancestors.should include(TireSwing::Node)
     end
 
     describe "with attribute names" do
       before(:each) do
-        @node = Treehouse::Node.create(:foo, :bar)
+        @node = TireSwing::Node.create(:foo, :bar)
       end
 
       it "creates a class with the given attributes" do
@@ -30,7 +30,7 @@ describe Treehouse::Node do
 
     describe "with an attribute hash" do
       before(:each) do
-        @node = Treehouse::Node.create(:lhs => :left_value, :rhs => :right_value)
+        @node = TireSwing::Node.create(:lhs => :left_value, :rhs => :right_value)
       end
 
       it "creates a class with attributes matching the hash keys" do
@@ -50,7 +50,7 @@ describe Treehouse::Node do
 
     describe "with a mix of named attributes and hash attributes" do
       before(:each) do
-        @node = Treehouse::Node.create(:one, :two, :three => :value)
+        @node = TireSwing::Node.create(:one, :two, :three => :value)
       end
 
       it "creates a class with attributes matching the named attributes and hash keys" do
@@ -67,7 +67,7 @@ describe Treehouse::Node do
 
   describe ".new" do
     before(:each) do
-      @node = Treehouse::Node.create(:child, :value => :data)
+      @node = TireSwing::Node.create(:child, :value => :data)
     end
 
     describe "with empty args" do
@@ -120,7 +120,7 @@ describe Treehouse::Node do
       end
 
       it "yields the syntax node instance if a mapped attribute is a lambda" do
-        @node = Treehouse::Node.create(:value => lambda { |x| @x = x })
+        @node = TireSwing::Node.create(:value => lambda { |x| @x = x })
         @node.new(@top)
         @x.should == @top
       end

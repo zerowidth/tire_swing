@@ -1,9 +1,9 @@
 require File.join(File.dirname(__FILE__), %w[spec_helper])
 
-describe Treehouse::NodeCreator do
+describe TireSwing::NodeCreator do
 
   before(:all) do
-    SomeNode = Class.new(Treehouse::Node)
+    SomeNode = Class.new(TireSwing::Node)
   end
   after(:all) do
     Object.send(:remove_const, "SomeNode")
@@ -12,13 +12,13 @@ describe Treehouse::NodeCreator do
   describe "#initialize" do
 
     it "takes a class as an argument" do
-      nc = Treehouse::NodeCreator.new(SomeNode)
+      nc = TireSwing::NodeCreator.new(SomeNode)
     end
   end
 
   describe "#new" do
     before(:each) do
-      @nc = Treehouse::NodeCreator.new(SomeNode)
+      @nc = TireSwing::NodeCreator.new(SomeNode)
     end
 
     it "takes parameters as if it were a treetop syntax node" do

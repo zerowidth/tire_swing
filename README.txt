@@ -1,4 +1,4 @@
-Treehouse
+TireSwing
     by Nathan Witmer
     http://github.com/aniero/treehouse
 
@@ -27,10 +27,10 @@ Given a treetop grammar:
     end
   end
 
-You can use Treehouse to define nodes for the grammar:
+You can use TireSwing to define nodes for the grammar:
 
   module SimpleAssignment
-    include Treehouse::NodeDefinition
+    include TireSwing::NodeDefinition
 
     node :assignment, :lhs, :rhs
     node :variable, :value => :text_value
@@ -48,7 +48,7 @@ for you:
 You can also define visitors for an AST:
 
   module SimpleAssignment
-    include Treehouse::VisitorDefinition
+    include TireSwing::VisitorDefinition
 
     visitor :hash_visitor do
       visits Assignment do |a|

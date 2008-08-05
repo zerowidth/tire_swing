@@ -1,4 +1,4 @@
-module Treehouse::NodeDefinition
+module TireSwing::NodeDefinition
 
   module ModuleMethods
 
@@ -21,12 +21,12 @@ module Treehouse::NodeDefinition
     #   end
     #
     def create_node(name)
-      Treehouse::NodeCreator.new(const_get(name.to_s.camelize))
+      TireSwing::NodeCreator.new(const_get(name.to_s.camelize))
     end
 
     # Define a node.
     #
-    # This creates a new class (a subclass of Treehouse::Node) with the given attribute names.
+    # This creates a new class (a subclass of TireSwing::Node) with the given attribute names.
     #
     # Attribute names can be lists of symbols (simple attributes) and/or a hash of name-value pairs (mapped attributes).
     # The new class will have attributes matching the names and hash keys given. More on the hash values in a minute.
@@ -79,7 +79,7 @@ module Treehouse::NodeDefinition
     #   Foo.new.name #=> "hello!"
     #
     def node(name, *attribute_names, &blk)
-      klass = Treehouse::Node.create *attribute_names
+      klass = TireSwing::Node.create *attribute_names
       const_set name.to_s.camelize, klass
       klass.class_eval &blk if block_given?
     end
