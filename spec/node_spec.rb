@@ -128,6 +128,14 @@ describe TireSwing::Node do
         @x.should == @top
       end
 
+      describe "for a node with an attribute as a method to call on the text value" do
+        it "calls that method on the text value, not the parsed node" do
+          node = TireSwing::Node.create(:value => :to_i)
+          @top.should_receive(:text_value).and_return("1234")
+          node.new(@top).value.should == 1234
+        end
+      end
+
     end
   end
 

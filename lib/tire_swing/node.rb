@@ -55,7 +55,11 @@ module TireSwing
           if handler.kind_of?(Proc)
             value = handler.call(parsed_node)
           else
-            value = parsed_node.send(handler)
+            if parsed_node.respond_to?(handler)
+              value = parsed_node.send(handler)
+            else
+              value = parsed_node.text_value.send(handler)
+            end
           end
         else
           value = parsed_node.send(attrib)

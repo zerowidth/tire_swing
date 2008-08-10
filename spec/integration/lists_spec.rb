@@ -22,8 +22,8 @@ describe Lists::GrammarParser do
     end
 
     it "has lists with numbers" do
-      @result.lists.first.numbers.should == [1, 2, 3]
-      @result.lists.last.numbers.should == [6, 7, 8, 9, 10]
+      @result.lists.first.should have(3).numbers
+      @result.lists.first.numbers.map { |n| n.value }.should == [1, 2, 3]
     end
 
   end

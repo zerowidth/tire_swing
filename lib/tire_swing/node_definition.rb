@@ -61,18 +61,31 @@ module TireSwing::NodeDefinition
     # The second method takes a treetop syntax node and auto-builds the node using the syntax node as a basis.
     # The auto-build functionality uses the attribute names and mapped attributes in the following way:
     #
-    # * Simple attributes: calls the method by that name on the syntax node
-    # * Mapped attributes: if the attribute value is a symbol or a string, it calls that method on the syntax node.
-    #   If the attribute value is a lambda, it yields the syntax node to the lambda.
+    # * Simple attributes: calls the method by that name on the syntax node, e.g.
     #
-    # If the value (or array of values) returned by one of these methods is another syntax node, the auto-build code
-    # will call the build method on each syntax node or array item (assuming each syntax node has a build method,
-    # usually auto-defined using create_node). Any value not responding to the build method is left alone.
+    #   node :assignment, :lhs, :rhs
+    #
+    # * Mapped attributes:
+    #   * symbol/string - call that method on *either* the node, if it responds, or on its text value (e.g. #to_i)
+    #
+    #     node :number, :value => :to_i # calls to_i on the number node's text value
+    #
+    #   * lambda - yields the parsed node to the lambda
+    #
+    #   Whatever the value (or array of values) is returned by the mapped call will then be built. Any item returned
+    #   that responds to the build method will have it called. If there's any bare syntax nodes left over, they are
+    #   converted into their text value, and anything else will be returned as-is (numbers, strings, etc.)
+    #
+    #   Note that you can use the array_of and extract helpers defined below to define lambdas for doing more advanced
+    #   filtering on the node and it's children.
     #
     # Simple example:
     #
     #   rule assignment
     #     variable:lhs "=" variable:rhs <create_node(:assignment)>
+    #   end
+    #   rule variable
+    #     [a-z]+
     #   end
     #
     #   node :assignment, :lhs, :rhs
@@ -93,7 +106,7 @@ module TireSwing::NodeDefinition
     end
 
     # Returns a lambda to select only child nodes of the given kind. This is best used for rules that can return
-    # arrays of different kind of nodes, some of which you want to ignore. E.g.:
+    # arrays of different kind of nodes, some of which you want to ignore, e.g.:
     #
     #   rule assignments
     #     assignment* <create_node(:assignments)>
@@ -101,10 +114,14 @@ module TireSwing::NodeDefinition
     #
     #   node :assignments, :assignments => array_of(:assignment)
     #
-    # If you specify that the array is recursive, it will retrieve all nested child nodes that will
-    # provide the kind of node specified.
+    # When parsed, this will give you a recursive set of nodes:
     #
-    # If you provide a block, the filtered result will be yielded to the block and returned as the final result
+    #   [assignment, [assignment, [assignment]]]
+    #
+    # If you specify that the array is recursive, it will retrieve all nested child nodes, no matter how deep, which
+    # provide the kind of node you want.
+    #
+    # If you provide a block, the filtered result will be yielded to the block and returned as the final result.
     #
     def array_of(kind, recursive = false, &blk)
       lambda do |node|
@@ -113,8 +130,8 @@ module TireSwing::NodeDefinition
       end
     end
 
-    # Takes a node and calls node_name on each in turn if possible, returning the result. This is useful for
-    # nested rules, such as:
+    # Returns a lambda which takes a node and calls node_name on each in turn if possible, returning the result.
+    # This is useful for nested rules, such as:
     #
     #   rule assignments
     #     (assignment [\n])+
@@ -122,9 +139,10 @@ module TireSwing::NodeDefinition
     #
     # This is a subtle difference from array_of. The rule given here provides a syntax node with multiple elements,
     # each one corresponding to the grouping, not to an individual child node -- that is, it's a list of
-    # [[assignment node, newline node], [assignment, newline]] instead of being a flattened list of
-    # [assignment, newline, assignment, newline].
-    # To extract these, you would do something like this:
+    # [[assignment node, newline node], [assignment, newline], ...] instead of being a flattened list of
+    # [assignment, newline, assignment, newline, ...].
+    #
+    # To extract these:
     #
     #   node :assignments, :assignments => extract(:assignment)
     #
