@@ -87,8 +87,8 @@ describe TireSwing::Node do
 
     describe "with an instance of Treetop::Runtime::SyntaxNode" do
       before(:each) do
-        @child = mock_syntax_node
-        @top = mock_syntax_node
+        @child = mock_syntax_node("child")
+        @top = mock_syntax_node("top")
       end
 
       describe "for a node with a single attribute as a named method" do

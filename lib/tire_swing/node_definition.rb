@@ -101,17 +101,14 @@ module TireSwing::NodeDefinition
     #
     #   node :assignments, :assignments => array_of(:assignment)
     #
+    # If you specify that the array is recursive, it will retrieve all nested child nodes that will
+    # provide the kind of node specified.
+    #
     # If you provide a block, the filtered result will be yielded to the block and returned as the final result
     #
-    # If you specify that the array is recursive, it will retrieve all nested children nodes that will
-    # provide the kind of node specified.
     def array_of(kind, recursive = false, &blk)
       lambda do |node|
-
-        result = node.elements.select do |element|
-          element.respond_to?(:node_to_build) && element.node_to_build == kind
-        end
-
+        result = NodeFilters.filter(node, kind, recursive)
         blk ? result.map(&blk) : result
       end
     end
@@ -137,11 +134,11 @@ module TireSwing::NodeDefinition
       lambda do |node|
         results = []
         results << node.send(node_name) if node.respond_to?(node_name)
-    
+
         results += node.elements.select do |element|
           element.respond_to?(node_name) && element.send(node_name)
         end
-    
+
         results
       end
     end
@@ -150,12 +147,13 @@ module TireSwing::NodeDefinition
 
   module NodeFilters
 
-    def self.filter(node, kind)
-      
-    end
-
-    def self.recursive_filter(node, kind)
-      
+    def self.filter(node, kind, recursive)
+      nodes = []
+      nodes << node if node.respond_to?(:node_to_build) && node.node_to_build == kind
+      if node.respond_to?(:elements) && node.elements
+        node.elements.each { |child| nodes.push *filter(child, kind, recursive) }
+      end
+      nodes
     end
 
   end

@@ -11,8 +11,8 @@ Spec::Runner.configure do |config|
   # config.mock_with :rr
 
   # borrowed from rspec_on_rails' mock_model
-  def mock_syntax_node(stubs={})
-    m = mock "mock syntax node", stubs
+  def mock_syntax_node(name, stubs={})
+    m = mock "mock syntax node (#{name})", stubs
     m.send(:__mock_proxy).instance_eval do
       def @target.is_a?(other)
         Treetop::Runtime::SyntaxNode.ancestors.include?(other)
