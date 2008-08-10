@@ -5,6 +5,14 @@ describe TireSwing::NodeDefinition do
     include TireSwing::NodeDefinition
   end
 
+  before(:all) do
+    TestNodes.class_eval { node :foo_node }
+  end
+
+  after(:all) do
+    TestNodes.send(:remove_const, "FooNode")
+  end
+
   it "adds a node method when included" do
     TestNodes.methods.should include("node")
   end
@@ -34,12 +42,6 @@ describe TireSwing::NodeDefinition do
   end
 
   describe ".create_node" do
-    before(:all) do
-      TestNodes.class_eval { node :foo_node }
-    end
-    after(:all) do
-      TestNodes.send(:remove_const, "FooNode")
-    end
 
     it "takes a node name as an argument" do
       TestNodes.create_node(:foo_node)
@@ -58,12 +60,6 @@ describe TireSwing::NodeDefinition do
   end
 
   describe ".array_of" do
-    before(:all) do
-      TestNodes.class_eval { node :foo_node }
-    end
-    after(:all) do
-      TestNodes.send(:remove_const, "FooNode")
-    end
 
     it "returns a lambda" do
       TestNodes.array_of(:foo_node).should be_an_instance_of(Proc)
@@ -73,6 +69,42 @@ describe TireSwing::NodeDefinition do
       a, b = mock_syntax_node(:node_to_build => :foo_node), mock_syntax_node(:node_to_build => :foo_node)
       node = mock_syntax_node(:elements => [1, 2, a, 3, b])
       TestNodes.array_of(:foo_node).call(node).should == [a, b]
+    end
+
+    describe "with a block provided" do
+      it "yields the filtered results to the block" do
+        a = mock_syntax_node(:node_to_build => :foo_node, :x => 1)
+        b = mock_syntax_node(:node_to_build => :foo_node, :x => 2)
+        node = mock_syntax_node(:elements => [1, 2, a, 3, b])
+        yielded = []
+        array_of = TestNodes.array_of(:foo_node) { |node| yielded << node; node.x }
+        array_of.call(node).should == [1, 2]
+        yielded.should == [a, b]
+      end
+    end
+
+  end
+
+  describe ".extract" do
+
+    it "returns a lambda" do
+      TestNodes.extract(:thing).should be_an_instance_of(Proc)
+    end
+
+    it "extracts all nodes with the given name when called" do
+      a = mock_syntax_node(:value => "a")
+      b = mock_syntax_node
+      c = mock_syntax_node(:value => "c")
+      node = mock_syntax_node(:elements => [a, b, c])
+      TestNodes.extract(:value).call(node).should == [a, c]
+    end
+
+    it "will extract from nested children as well as the given node" do
+      a = mock_syntax_node(:value => "a")
+      b = mock_syntax_node
+      c = mock_syntax_node(:value => "c")
+      node = mock_syntax_node(:value => "foo", :elements => [a, b, c])
+      TestNodes.extract(:value).call(node).should == ["foo", a, c]
     end
 
   end

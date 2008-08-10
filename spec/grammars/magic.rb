@@ -11,7 +11,7 @@ module MagicAssignments
       lhs:variable whitespace* "=" whitespace* rhs:variable [\\n] <AST.create_node(:assignment)>
     end
     rule variable
-      [a-z]+ <AST.create_node(:variable)>
+      [a-z]+
     end
     rule whitespace
       [ ]
@@ -30,9 +30,6 @@ module MagicAssignments
 
     node :assignment, :lhs, :rhs
     node :assignments, :assignments => array_of(:assignment)
-    node :blank_line # FIXME (nathan) delete
-    node :variable, :value => :text_value # FIXME (nathan) delete
-
   end
 
   include TireSwing::VisitorDefinition
@@ -44,10 +41,7 @@ module MagicAssignments
       hash
     end
     visits AST::Assignment do |assignment, hash|
-      hash[visit(assignment.lhs)] = visit(assignment.rhs)
-    end
-    visits AST::Variable do |variable|
-      variable.value
+      hash[assignment.lhs] = assignment.rhs
     end
   end
 

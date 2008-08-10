@@ -96,15 +96,66 @@ module TireSwing::NodeDefinition
     # arrays of different kind of nodes, some of which you want to ignore. E.g.:
     #
     #   rule assignments
-    #     (blank_line / assignment)*
+    #     assignment* <create_node(:assignments)>
     #   end
     #
     #   node :assignments, :assignments => array_of(:assignment)
     #
-    def array_of(kind)
+    # If you provide a block, the filtered result will be yielded to the block and returned as the final result
+    #
+    # If you specify that the array is recursive, it will retrieve all nested children nodes that will
+    # provide the kind of node specified.
+    def array_of(kind, recursive = false, &blk)
       lambda do |node|
-        node.elements.select { |element| element.respond_to?(:node_to_build) && element.node_to_build == kind }
+
+        result = node.elements.select do |element|
+          element.respond_to?(:node_to_build) && element.node_to_build == kind
+        end
+
+        blk ? result.map(&blk) : result
       end
+    end
+
+    # Takes a node and calls node_name on each in turn if possible, returning the result. This is useful for
+    # nested rules, such as:
+    #
+    #   rule assignments
+    #     (assignment [\n])+
+    #   end
+    #
+    # This is a subtle difference from array_of. The rule given here provides a syntax node with multiple elements,
+    # each one corresponding to the grouping, not to an individual child node -- that is, it's a list of
+    # [[assignment node, newline node], [assignment, newline]] instead of being a flattened list of
+    # [assignment, newline, assignment, newline].
+    # To extract these, you would do something like this:
+    #
+    #   node :assignments, :assignments => extract(:assignment)
+    #
+    # Which will extract just the assignments out of those "nested children", and then do what you expect from there.
+    #
+    def extract(node_name)
+      lambda do |node|
+        results = []
+        results << node.send(node_name) if node.respond_to?(node_name)
+    
+        results += node.elements.select do |element|
+          element.respond_to?(node_name) && element.send(node_name)
+        end
+    
+        results
+      end
+    end
+
+  end
+
+  module NodeFilters
+
+    def self.filter(node, kind)
+      
+    end
+
+    def self.recursive_filter(node, kind)
+      
     end
 
   end

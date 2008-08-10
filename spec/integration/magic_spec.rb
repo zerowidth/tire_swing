@@ -19,8 +19,8 @@ describe MagicAssignments::Parser do
 
     it "has an assignment with correct values" do
       @result.assignments.first.should be_an_instance_of(MagicAssignments::AST::Assignment)
-      @result.assignments.first.lhs.value.should == "foo"
-      @result.assignments.first.rhs.value.should == "bar"
+      @result.assignments.first.lhs.should == "foo"
+      @result.assignments.first.rhs.should == "bar"
     end
 
   end
