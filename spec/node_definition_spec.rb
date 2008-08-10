@@ -49,10 +49,30 @@ describe TireSwing::NodeDefinition do
       TestNodes.create_node(:foo_node).should be_an_instance_of(TireSwing::NodeCreator)
     end
 
-    it "instantiates the node creator with the class corresponding to the node name" do
+    it "instantiates the node creator for the given node name" do
       obj = Object.new
-      TireSwing::NodeCreator.should_receive(:new).with(TestNodes::FooNode).and_return(obj)
+      TireSwing::NodeCreator.should_receive(:new).with(:foo_node, TestNodes::FooNode).and_return(obj)
       TestNodes.create_node(:foo_node).should == obj
+    end
+
+  end
+
+  describe ".array_of" do
+    before(:all) do
+      TestNodes.class_eval { node :foo_node }
+    end
+    after(:all) do
+      TestNodes.send(:remove_const, "FooNode")
+    end
+
+    it "returns a lambda" do
+      TestNodes.array_of(:foo_node).should be_an_instance_of(Proc)
+    end
+
+    it "returns a lambda that filters a node's elements for nodes that will build the given node type" do
+      a, b = mock_syntax_node(:node_to_build => :foo_node), mock_syntax_node(:node_to_build => :foo_node)
+      node = mock_syntax_node(:elements => [1, 2, a, 3, b])
+      TestNodes.array_of(:foo_node).call(node).should == [a, b]
     end
 
   end

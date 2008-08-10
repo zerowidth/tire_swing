@@ -13,8 +13,8 @@ describe MagicAssignments::Parser do
       @result.should be_an_instance_of(MagicAssignments::AST::Assignments)
     end
 
-    it "has the right number of nodes" do
-      @result.should have(7).assignments
+    it "has the right number of assignments" do
+      @result.should have(3).assignments
     end
 
     it "has an assignment with correct values" do

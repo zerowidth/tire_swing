@@ -20,8 +20,16 @@ module TireSwing::NodeDefinition
     #     [a-z]+ <create_node(:variable)>
     #   end
     #
+    # Also note that you can specify alternate namespaces:
+    #
+    #   module AST
+    #     node :variable
+    #   end
+    #
+    #   <AST.create_node(:variable)>
+    #
     def create_node(name)
-      TireSwing::NodeCreator.new(const_get(name.to_s.camelize))
+      TireSwing::NodeCreator.new(name, const_get(name.to_s.camelize))
     end
 
     # Define a node.
@@ -82,6 +90,21 @@ module TireSwing::NodeDefinition
       klass = TireSwing::Node.create *attribute_names
       const_set name.to_s.camelize, klass
       klass.class_eval &blk if block_given?
+    end
+
+    # Returns a lambda to select only child nodes of the given kind. This is best used for rules that can return
+    # arrays of different kind of nodes, some of which you want to ignore. E.g.:
+    #
+    #   rule assignments
+    #     (blank_line / assignment)*
+    #   end
+    #
+    #   node :assignments, :assignments => array_of(:assignment)
+    #
+    def array_of(kind)
+      lambda do |node|
+        node.elements.select { |element| element.respond_to?(:node_to_build) && element.node_to_build == kind }
+      end
     end
 
   end

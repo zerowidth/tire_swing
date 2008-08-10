@@ -17,7 +17,7 @@ module MagicAssignments
       [ ]
     end
     rule blank_line
-      whitespace* [\\n] <AST.create_node(:blank_line)>
+      whitespace* [\\n]
     end
   end
 end
@@ -28,10 +28,10 @@ module MagicAssignments
   module AST
     include TireSwing::NodeDefinition
 
-    node :assignments, :assignments => :elements
     node :assignment, :lhs, :rhs
-    node :blank_line
-    node :variable, :value => :text_value
+    node :assignments, :assignments => array_of(:assignment)
+    node :blank_line # FIXME (nathan) delete
+    node :variable, :value => :text_value # FIXME (nathan) delete
 
   end
 
@@ -46,7 +46,6 @@ module MagicAssignments
     visits AST::Assignment do |assignment, hash|
       hash[visit(assignment.lhs)] = visit(assignment.rhs)
     end
-    visits AST::BlankLine
     visits AST::Variable do |variable|
       variable.value
     end

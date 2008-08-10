@@ -51,11 +51,11 @@ module TireSwing
     # Auto-builds this node using the provided parsed node and the defined attributes and mapped attributes.
     def build_from_parsed_node(parsed_node)
       attributes.each do |attrib|
-        if value = mapping(attrib)
-          if value.kind_of?(Proc)
-            value = value.call(parsed_node)
+        if handler = mapping(attrib)
+          if handler.kind_of?(Proc)
+            value = handler.call(parsed_node)
           else
-            value = parsed_node.send(mapping(attrib))
+            value = parsed_node.send(handler)
           end
         else
           value = parsed_node.send(attrib)
