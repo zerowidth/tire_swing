@@ -60,9 +60,24 @@ module TireSwing
         else
           value = parsed_node.send(attrib)
         end
-        value = value.map { |val| val.respond_to?(:build) ? val.build : val } if value.kind_of?(Array)
-        value = value.build if value.respond_to?(:build)
+
+        value = if value.kind_of?(Array)
+          value.map { |val| extract_value(val) }
+        else
+          extract_value(value)
+        end
+
         send("#{attrib}=", value)
+      end
+    end
+
+    def extract_value(value)
+      if value.respond_to?(:build)
+        value.build
+      elsif value.kind_of?(Treetop::Runtime::SyntaxNode)
+        value.text_value
+      else
+        value
       end
     end
 

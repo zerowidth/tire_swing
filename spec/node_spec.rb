@@ -87,41 +87,44 @@ describe TireSwing::Node do
 
     describe "with an instance of Treetop::Runtime::SyntaxNode" do
       before(:each) do
-        @child = mock_syntax_node :build => "child value"
-        @top = mock_syntax_node :child => @child, :data => "data"
+        @child = mock_syntax_node
+        @top = mock_syntax_node
       end
 
-      it "sets the named values by calling build on the named child node" do
-        @top.should_receive(:child).and_return(@child)
-        @child.should_receive(:build).and_return("child value")
-        n = @node.new(@top)
-        n.child.should == "child value"
-      end
-
-      it "calls the specified method directly for hash values" do
-        @top.should_receive(:data).and_return do
-          puts "called from #{caller.detect {|c| c !~ /rspec/}}"
-          "foo"
+      describe "for a node with a single attribute as a named method" do
+        it "retrieves the value for the attribute by calling the named method" do
+          @node = TireSwing::Node.create(:foo => :a_method)
+          @top.should_receive(:a_method).and_return("asdf")
+          @node.new(@top).foo.should == "asdf"
         end
-        n = @node.new(@top)
-        n.value.should == "foo"
       end
 
-      it "calls build on each element of a referenced node value if that value is an array" do
-        @top.should_receive(:child).and_return([@child, @child])
-        @child.should_receive(:build).exactly(2).times.and_return("one", "two")
-        n = @node.new(@top)
-        n.child.should == %w(one two)
+      describe "for a node with an attribute naming a child syntax node" do
+        it "retrieves the value by calling build on the child" do
+          @top.should_receive(:child).and_return(@child)
+          @node = TireSwing::Node.create(:foo => :child)
+          @child.should_receive(:build).and_return("child value")
+          @node.new(@top).foo.should == "child value"
+        end
+
+        it "calls text_value on the child if the child doesn't have a build method" do
+          @top.should_receive(:child).and_return(@child)
+          @node = TireSwing::Node.create(:foo => :child)
+          @child.should_receive(:text_value).and_return("child value")
+          @node.new(@top).foo.should == "child value"
+        end
+
+        it "retrieves the value of each item in an array if the named attribute returns one" do
+          @child.should_receive(:build).and_return("child")
+          @top.should_receive(:children).and_return(["foo", 1, @child])
+          TireSwing::Node.create(:foo => :children).new(@top).foo.should == ["foo", 1, "child"]
+        end
+
       end
 
-      it "only calls build on elements of an array if they respond to that method" do
-        @top.should_receive(:child).and_return([@child, "blah"])
-        @node.new(@top).child.should == ["child value", "blah"]
-      end
-
-      it "yields the syntax node instance if a mapped attribute is a lambda" do
-        @node = TireSwing::Node.create(:value => lambda { |x| @x = x })
-        @node.new(@top)
+      it "yields the syntax node instance if a named attribute is a lambda" do
+        @node = TireSwing::Node.create(:value => lambda { |x| @x = x; "asdf" })
+        @node.new(@top).value.should == "asdf"
         @x.should == @top
       end
 
