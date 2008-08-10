@@ -36,10 +36,14 @@ You can use TireSwing to define nodes for the grammar:
     node :variable, :value => :text_value
   end
 
-When you parse the grammar and call .build, it will return an AST using the nodes you defined, auto-building everything
+And use TireSwing to extend the Treetop-provided parser with a helper method or two:
+
+  TireSwing.parses_grammar(SimpleAssignment)
+
+When you parse the grammar using the helper, it will return an AST using the nodes you defined, auto-building everything
 for you:
 
-  ast = Parser.parse("foo = bar").build
+  ast = SimpleAssignment.ast("foo = bar")
 
   ast.class #=> SimpleAssignment::Assignment
   ast.lhs.class #=> SimpleAssignment::Variable

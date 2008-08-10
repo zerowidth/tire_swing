@@ -4,10 +4,10 @@ Treetop.load_from_string <<-GRAMMAR
 module SimpleAssignment
   grammar Grammar
     rule assignment
-      lhs:variable space* "=" space* rhs:variable <AST.create_node(:assignment)>
+      lhs:variable space* "=" space* rhs:variable <create_node(:assignment)>
     end
     rule variable
-      [a-z]+ <AST.create_node(:variable)>
+      [a-z]+ <create_node(:variable)>
     end
     rule space
       [ ]+
@@ -37,17 +37,14 @@ module SimpleAssignment
     end
   end
 
-  class Parser < ::Treetop::Runtime::CompiledParser
-    include Grammar
-    def self.parse(io)
-      new.parse(io).build
-    end
-  end
+  # Set up the parser helper, pointing to the grammar and the AST
+  # This defines GrammarParser.ast on the Treetop-provided GrammarParser.
+  TireSwing.parses_grammar(Grammar, AST)
 
 end
 
 require "pp"
-ast = SimpleAssignment::Parser.parse("foo=bar")
+ast = SimpleAssignment::GrammarParser.ast("foo=bar")
 puts "----- AST -----"
 pp ast
 puts "\n----- visitor output -----"

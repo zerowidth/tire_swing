@@ -28,6 +28,9 @@ module AssignmentsLanguage
     end
   end
 
+  # This uses an external eval method to build the TireSwing AST manually. Don't do this, but it's here for
+  # an example.
+
   class Parser < ::Treetop::Runtime::CompiledParser
     include Grammar
     def self.parse(io)

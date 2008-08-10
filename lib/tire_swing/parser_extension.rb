@@ -18,7 +18,9 @@ module TireSwing
   # an AST defined by TireSwing. Takes the grammar module as an argument.
   #
   # Additionally, in case you are using bare <create_node(...)> calls in your grammar, this defines a method on
-  # the grammar parser to delegate to the grammar by default or the given module containing the AST.
+  # the grammar parser to delegate to the grammar so create_node calls happen correctly.
+  #
+  # You can specify an alternate module which contains the AST if desired.
   def self.parses_grammar(grammar, ast=nil)
     parser = (grammar.to_s + "Parser").constantize
     ast ||= grammar

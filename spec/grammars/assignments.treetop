@@ -1,4 +1,5 @@
 # This demonstrates a grammar using inline evals to use Treetop to build an external TireSwing-based AST.
+# Don't do this, this takes away a good bit of the magic.
 module AssignmentsLanguage
   grammar Grammar
 

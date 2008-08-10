@@ -2,11 +2,11 @@ require File.join(File.dirname(__FILE__), %w[.. spec_helper])
 
 require TireSwing.path(%w(spec grammars magic))
 
-describe MagicAssignments::Parser do
-  describe ".parse" do
+describe MagicAssignments::GrammarParser do
+  describe ".ast" do
     before(:each) do
       @input = File.read(TireSwing.path(%w(spec fixtures assignments.txt)))
-      @result = MagicAssignments::Parser.parse(@input)
+      @result = MagicAssignments::GrammarParser.ast(@input)
     end
 
     it "returns an AST" do
@@ -29,7 +29,7 @@ end
 describe MagicAssignments::HashVisitor do
   describe ".visit" do
     it "returns a hash representation of the assignments" do
-      ast = MagicAssignments::Parser.parse(File.read(TireSwing.path(%w(spec fixtures assignments.txt))))
+      ast = MagicAssignments::GrammarParser.ast(File.read(TireSwing.path(%w(spec fixtures assignments.txt))))
       MagicAssignments::HashVisitor.visit(ast).should == {
         "foo" => "bar",
         "baz" => "blech",

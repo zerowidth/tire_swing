@@ -5,10 +5,10 @@ Treetop.load_from_string <<-GRAMMAR
 module MagicAssignments
   grammar Grammar
     rule assignments
-      ( blank_line / assignment )* <AST.create_node(:assignments)>
+      ( blank_line / assignment )* <create_node(:assignments)>
     end
     rule assignment
-      lhs:variable whitespace* "=" whitespace* rhs:variable [\\n] <AST.create_node(:assignment)>
+      lhs:variable whitespace* "=" whitespace* rhs:variable [\\n] <create_node(:assignment)>
     end
     rule variable
       [a-z]+
@@ -45,12 +45,7 @@ module MagicAssignments
     end
   end
 
-  class Parser < ::Treetop::Runtime::CompiledParser
-    include Grammar
-    def self.parse(io)
-      new.parse(io).build
-    end
-  end
+  TireSwing.parses_grammar(Grammar, AST)
 
 end
 
