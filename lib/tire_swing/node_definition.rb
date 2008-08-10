@@ -135,9 +135,7 @@ module TireSwing::NodeDefinition
         results = []
         results << node.send(node_name) if node.respond_to?(node_name)
 
-        results += node.elements.select do |element|
-          element.respond_to?(node_name) && element.send(node_name)
-        end
+        results.push *node.elements.select { |elem| elem.respond_to?(node_name) }.map { |elem| elem.send(node_name) }
 
         results
       end
@@ -149,9 +147,12 @@ module TireSwing::NodeDefinition
 
     def self.filter(node, kind, recursive)
       nodes = []
-      nodes << node if node.respond_to?(:node_to_build) && node.node_to_build == kind
-      if node.respond_to?(:elements) && node.elements
-        node.elements.each { |child| nodes.push *filter(child, kind, recursive) }
+      children = node.respond_to?(:elements) ? (node.elements || []) : []
+      if recursive
+        nodes << node if node.respond_to?(:node_to_build) && node.node_to_build == kind
+        children.each { |child| nodes.push *filter(child, kind, true) }
+      else
+        nodes = ([node] + children).select { |n| n.respond_to?(:node_to_build) && n.node_to_build == kind }
       end
       nodes
     end

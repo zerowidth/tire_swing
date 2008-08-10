@@ -23,6 +23,7 @@ describe Lists::GrammarParser do
 
     it "has lists with numbers" do
       @result.lists.first.numbers.should == [1, 2, 3]
+      @result.lists.last.numbers.should == [6, 7, 8, 9, 10]
     end
 
   end

@@ -71,6 +71,18 @@ describe TireSwing::NodeDefinition do
       TestNodes.array_of(:foo_node).call(node).should == [a, b]
     end
 
+    it "will return the node itself if it provides the given node type" do
+      node = mock_syntax_node("node", :node_to_build => :foo)
+      TestNodes.array_of(:foo).call(node).should == [node]
+    end
+
+    it "does not filter recursively by default" do
+      b = mock_syntax_node("b", :elements => ["stuff", "whatever"], :node_to_build => :foo)
+      a = mock_syntax_node("a", :elements => ["jkl", b], :node_to_build => :foo)
+      top = mock_syntax_node("top", :elements => ["asdf", a], :node_to_build => :foo)
+      TestNodes.array_of(:foo).call(top).should == [top, a]
+    end
+
     describe "with the recursive flag" do
       it "returns a lambda that filters recursively for the right kind of child" do
         b = mock_syntax_node("b", :elements => ["stuff", "whatever"], :node_to_build => :foo)
@@ -100,20 +112,21 @@ describe TireSwing::NodeDefinition do
       TestNodes.extract(:thing).should be_an_instance_of(Proc)
     end
 
-    it "extracts all nodes with the given name when called" do
-      a = mock_syntax_node("a", :value => "a")
+    it "extracts all nodes by calling the given node name wherever it applies" do
+      q = mock_syntax_node("q")
+      a = mock_syntax_node("a", :value => q)
       b = mock_syntax_node("b")
       c = mock_syntax_node("c", :value => "c")
       node = mock_syntax_node("node", :elements => [a, b, c])
-      TestNodes.extract(:value).call(node).should == [a, c]
+      TestNodes.extract(:value).call(node).should == [q, "c"]
     end
 
-    it "will extract from nested children as well as the given node" do
+    it "will extract the given node as well as the nested children " do
       a = mock_syntax_node("a", :value => "a")
       b = mock_syntax_node("b")
       c = mock_syntax_node("c", :value => "c")
       node = mock_syntax_node("node", :value => "foo", :elements => [a, b, c])
-      TestNodes.extract(:value).call(node).should == ["foo", a, c]
+      TestNodes.extract(:value).call(node).should == ["foo", "a", "c"]
     end
 
   end

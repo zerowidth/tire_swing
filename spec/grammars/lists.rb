@@ -28,8 +28,8 @@ module Lists
   module AST
     include TireSwing::NodeDefinition
     node :lists, :elements, :lists => extract(:list)
-    node :list, :elements, :numbers => extract(:number) { |number| number.text_value.to_i }
-    node :number, :value => :to_i
+    node :list, :elements, :numbers => array_of(:number, true) { |number| number.text_value.to_i }
+    node :number
   end
 
   class Lists::GrammarParser
@@ -37,11 +37,8 @@ module Lists
       parser = new
       result = parser.parse(io)
       if result
-        puts result.elements.first.elements.inspect
-        # STDERR.puts(result.inspect)
         result.build
       else
-        STDERR.puts parser.inspect
         raise "oh noes"
       end
     end
