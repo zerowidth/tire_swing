@@ -32,16 +32,5 @@ module Lists
     node :number, :value => :to_i
   end
 
-  class Lists::GrammarParser
-    def self.ast(io)
-      parser = new
-      result = parser.parse(io)
-      if result
-        result.build
-      else
-        raise "oh noes"
-      end
-    end
-  end
-
+  TireSwing.parses_grammar(Grammar)
 end
