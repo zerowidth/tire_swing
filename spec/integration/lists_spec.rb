@@ -23,7 +23,7 @@ describe Lists::GrammarParser do
 
     it "has lists with numbers" do
       @result.lists.first.should have(3).numbers
-      @result.lists.first.numbers.map { |n| n.value }.should == [1, 2, 3]
+      @result.lists.first.numbers.should == [1, 2, 3]
     end
 
   end
