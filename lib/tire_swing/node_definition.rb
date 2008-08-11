@@ -17,7 +17,7 @@ module TireSwing::NodeDefinition
     # You can define the grammar as
     #
     #   rule variable
-    #     [a-z]+ <create_node(:variable)>
+    #     [a-z]+ <node(:variable)>
     #   end
     #
     # Also note that you can specify alternate namespaces:
@@ -27,6 +27,16 @@ module TireSwing::NodeDefinition
     #   end
     #
     #   <AST.create_node(:variable)>
+    #
+    # When you're using the parser extension:
+    #
+    #   TireSwing.parses_grammar(Grammar, AST)
+    #
+    # you can use
+    #
+    #   <node(...)>
+    #
+    # Which is an instance method wrapper for the create_node class method.
     #
     def create_node(name)
       TireSwing::NodeCreator.new(name, const_get(name.to_s.camelize))
@@ -82,7 +92,7 @@ module TireSwing::NodeDefinition
     # Simple example:
     #
     #   rule assignment
-    #     variable:lhs "=" variable:rhs <create_node(:assignment)>
+    #     variable:lhs "=" variable:rhs <node(:assignment)>
     #   end
     #   rule variable
     #     [a-z]+
@@ -109,7 +119,7 @@ module TireSwing::NodeDefinition
     # arrays of different kind of nodes, some of which you want to ignore, e.g.:
     #
     #   rule assignments
-    #     assignment* <create_node(:assignments)>
+    #     assignment* <node(:assignments)>
     #   end
     #
     #   node :assignments, :assignments => array_of(:assignment)
@@ -177,18 +187,11 @@ module TireSwing::NodeDefinition
 
   end
 
-  # Include this module to get access to the node and create_node methods.
-  # A good place to include this is in a separate AST module, e.g.
+  # Include this module to get access to the node and create_node class methods.
   #
   #   module AST
   #     include NodeDefinition
   #     node :foo
-  #   end
-  #
-  # And then in your grammar:
-  #
-  #   rule foo
-  #     "foo" <AST.create_node(:foo)>
   #   end
   #
   def self.included(base)

@@ -16,16 +16,16 @@ describe TireSwing::ParserExtension do
       FooParser.should respond_to(:ast)
     end
 
-    it "defines a create_node method on the parser that delegates to the grammar" do
+    it "defines a node method on the parser that delegates to the grammar" do
       TireSwing.parses_grammar(Foo)
       Foo.should_receive(:create_node).with("a", "b", "c")
-      FooParser.new.create_node("a", "b", "c")
+      FooParser.new.node("a", "b", "c")
     end
 
     it "defines a create_node method on the parser that delegates to the given AST, if provided" do
       TireSwing.parses_grammar(Foo, AST)
       AST.should_receive(:create_node).with("a", "b", "c")
-      FooParser.new.create_node("a", "b", "c")
+      FooParser.new.node("a", "b", "c")
     end
 
   end
@@ -37,10 +37,10 @@ describe TireSwing::ParserExtension do
 module TestGramma
   grammar Grammar
     rule letters
-      letter* <create_node(:letters)>
+      letter* <node(:letters)>
     end
     rule letter
-      value:[a-z] [\n]? <create_node(:letter)>
+      value:[a-z] [\n]? <node(:letter)>
     end
   end
 end

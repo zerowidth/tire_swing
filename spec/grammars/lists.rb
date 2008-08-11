@@ -5,15 +5,15 @@ Treetop.load_from_string <<-GRAMMAR
 module Lists
   grammar Grammar
     rule lists
-      (list [\n])+ <create_node(:lists)>
+      (list [\n])+ <node(:lists)>
     end
     
     rule list
-      "[" whitespace* number ("," whitespace* number)* "]" <create_node(:list)>
+      "[" whitespace* number ("," whitespace* number)* "]" <node(:list)>
     end
 
     rule number
-      [1-9] [0-9]* <create_node(:number)>
+      [1-9] [0-9]* <node(:number)>
     end
 
     rule whitespace

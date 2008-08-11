@@ -4,10 +4,10 @@ Treetop.load_from_string <<-GRAMMAR
 module SimpleAssignment
   grammar Grammar
     rule assignment
-      lhs:variable space* "=" space* rhs:variable <create_node(:assignment)>
+      lhs:variable space* "=" space* rhs:variable <node(:assignment)>
     end
     rule variable
-      [a-z]+ <create_node(:variable)>
+      [a-z]+ <node(:variable)>
     end
     rule space
       [ ]+

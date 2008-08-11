@@ -5,10 +5,10 @@ Treetop.load_from_string <<-GRAMMAR
 module MagicAssignments
   grammar Grammar
     rule assignments
-      ( blank_line / assignment )* <create_node(:assignments)>
+      ( blank_line / assignment )* <node(:assignments)>
     end
     rule assignment
-      lhs:variable whitespace* "=" whitespace* rhs:variable [\\n] <create_node(:assignment)>
+      lhs:variable whitespace* "=" whitespace* rhs:variable [\\n] <node(:assignment)>
     end
     rule variable
       [a-z]+
