@@ -133,7 +133,7 @@ module TireSwing::NodeDefinition
     #
     # If you provide a block, the filtered result will be yielded to the block and returned as the final result.
     #
-    def array_of(kind, recursive = false, &blk)
+    def array_of(kind, recursive = true, &blk)
       lambda do |node|
         result = NodeFilters.filter(node, kind, recursive)
         blk ? result.map(&blk) : result

@@ -76,19 +76,19 @@ describe TireSwing::NodeDefinition do
       TestNodes.array_of(:foo).call(node).should == [node]
     end
 
-    it "does not filter recursively by default" do
+    it "filters recursively by default" do
       b = mock_syntax_node("b", :elements => ["stuff", "whatever"], :node_to_build => :foo)
       a = mock_syntax_node("a", :elements => ["jkl", b], :node_to_build => :foo)
       top = mock_syntax_node("top", :elements => ["asdf", a], :node_to_build => :foo)
-      TestNodes.array_of(:foo).call(top).should == [top, a]
+      TestNodes.array_of(:foo, true).call(top).should == [top, a, b]
     end
 
-    describe "with the recursive flag" do
-      it "returns a lambda that filters recursively for the right kind of child" do
+    describe "with the recursive flag set to false" do
+      it "returns a lambda that does not filter recursively" do
         b = mock_syntax_node("b", :elements => ["stuff", "whatever"], :node_to_build => :foo)
         a = mock_syntax_node("a", :elements => ["jkl", b], :node_to_build => :foo)
         top = mock_syntax_node("top", :elements => ["asdf", a], :node_to_build => :foo)
-        TestNodes.array_of(:foo, true).call(top).should == [top, a, b]
+        TestNodes.array_of(:foo, false).call(top).should == [top, a]
       end
     end
 
