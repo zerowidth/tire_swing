@@ -46,6 +46,11 @@ module TireSwing
       end
     end
 
+    # Deep-copy of this node and any children. Use this if you need to manipulate an AST without modifying the original
+    def clone
+      Marshal.load(Marshal.dump(self))
+    end
+
     protected
 
     # Auto-builds this node using the provided parsed node and the defined attributes and mapped attributes.

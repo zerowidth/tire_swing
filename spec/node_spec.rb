@@ -139,4 +139,13 @@ describe TireSwing::Node do
     end
   end
 
+  describe "#clone" do
+    it "does a deep copy of a node" do
+      # can't leave this as an anonymous class, marshal dump/load don't like it
+      MyNode = TireSwing::Node.create
+      node = MyNode.new
+      node.clone.should_not eql node
+    end
+  end
+
 end
