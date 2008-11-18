@@ -25,24 +25,38 @@ describe TireSwing::Visitor do
 
   end
 
-  describe "#visit" do
+  describe "visitors", :shared => true do
     before(:each) do
       @visitor.visits(Foo) { |node| "#{node.class}-foo!" }
     end
 
     it "takes a node and calls the appropriate block, passing in the node" do
-      @visitor.visit(Foo.new).should == "#{Foo}-foo!"
+      @visitor_instance.visit(Foo.new).should == "#{Foo}-foo!"
     end
 
     it "raises an exception if it doesn't know how to handle a node" do
-      lambda { @visitor.visit(Bar.new) }.should raise_error(Exception, /Bar/)
+      lambda { @visitor_instance.visit(Bar.new) }.should raise_error(Exception, /Bar/)
     end
 
     it "calls the visit block with arguments, if arguments are given" do
       @visitor.visits(Bar) { |node, a, b| "#{a}-#{b}" }
-      @visitor.visit(Bar.new, "foo", "bar").should == "foo-bar"
+      @visitor_instance.visit(Bar.new, "foo", "bar").should == "foo-bar"
     end
 
+  end
+
+  describe ".visit" do
+    before(:each) do
+      @visitor_instance = @visitor
+    end
+    it_should_behave_like "visitors"
+  end
+
+  describe "#visit" do
+    before(:each) do
+      @visitor_instance = @visitor.new
+    end
+    it_should_behave_like "visitors"
   end
 
 end

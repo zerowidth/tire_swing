@@ -32,11 +32,11 @@ describe TireSwing::VisitorDefinition, "when included" do
       @nodes.const_get("Printer").methods.should include("visits")
     end
 
-    it "takes a block with which to define visitors and evaluates it in the context of the new visitor class" do
+    it "evaluates at a class level to allow for attribute definitions and more" do
       @nodes.class_eval do
-        def what; end
+        visitor(:printer) { attr_accessor :thingy }
       end
-      @nodes.instance_methods.should include("what")
+      @nodes.const_get("Printer").new.should respond_to(:thingy=)
     end
 
   end

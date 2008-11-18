@@ -1,10 +1,12 @@
+# -*- encoding: utf-8 -*-
+
 Gem::Specification.new do |s|
   s.name = %q{tire_swing}
-  s.version = "0.0.3"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nathan Witmer"]
-  s.date = %q{2008-08-11}
+  s.date = %q{2008-11-17}
   s.description = %q{Simple node and visitor definitions for Treetop grammars.}
   s.email = %q{nwitmer at gmail dot com}
   s.extra_rdoc_files = ["History.txt", "README.txt", "spec/fixtures/assignments.txt"]
@@ -14,14 +16,14 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--main", "README.txt"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{}
-  s.rubygems_version = %q{1.2.0}
+  s.rubygems_version = %q{1.3.1}
   s.summary = %q{Simple node and visitor definitions for Treetop grammars}
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 2
 
-    if current_version >= 3 then
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<treetop>, [">= 1.2.4"])
       s.add_runtime_dependency(%q<attributes>, [">= 5.0.1"])
       s.add_runtime_dependency(%q<activesupport>, [">= 2.0.2"])

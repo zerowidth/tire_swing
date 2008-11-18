@@ -35,6 +35,14 @@ module TireSwing::VisitorDefinition
     #
     #   HashVisitor.visit( assignment_node )
     #
+    # Note that this is using class_eval, so you can define methods inside, including overrides to #visit.
+    #
+    # Note also that this is just a wrapper for:
+    #
+    #   class MyVisitor < TireSwing::Visitor
+    #     visits ...
+    #   end
+    #
     def visitor(name, &blk)
       klass = Class.new(TireSwing::Visitor)
       const_set name.to_s.camelize, klass
