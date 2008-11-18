@@ -70,8 +70,8 @@ end
 
     describe "with invalid input" do
 
-      it "raises an exception" do
-        lambda { parse }.should raise_error(TireSwing::ParseError)
+      it "raises an exception with" do
+        lambda { parse }.should raise_error(TireSwing::ParseError, /as3f.*\^/m)
       end
 
       def parse

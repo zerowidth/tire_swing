@@ -1,7 +1,8 @@
 == 1.0.4 / 2008-11-17
 
-* 1 minor enhancement
-  * Updated visitor code to use class instances instead of class-level methods for everything to allow for more flexibility
+* 2 minor enhancements
+  * Updated visitor code to use class instances instead of class-level methods for greater flexibility
+  * Updated error handling to include parsing context in error message
 
 == 1.0.0 / 2008-06-29
 

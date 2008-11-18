@@ -8,7 +8,14 @@ module TireSwing
       if result
         result.build
       else
-        raise TireSwing::ParseError.new(parser.failure_reason, parser)
+        raise ParseError.new(
+          [
+            parser.failure_reason,
+            parser.input.split("\n")[parser.failure_line-1],
+            " " * parser.failure_index + "^"
+          ].join("\n"),
+          parser
+        )
       end
     end
 
