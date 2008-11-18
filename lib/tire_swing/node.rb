@@ -31,6 +31,8 @@ module TireSwing
       @attribute_mapping ||= {}
     end
 
+    attr_accessor :parent
+
     # Instantiate a node.
     #
     # Values can either be a hash of values to set the values of this node's attributes, or a Treetop syntax node
@@ -57,15 +59,7 @@ module TireSwing
     def build_from_parsed_node(parsed_node)
       attributes.each do |attrib|
         if handler = mapping(attrib)
-          if handler.kind_of?(Proc)
-            value = handler.call(parsed_node)
-          else
-            if parsed_node.respond_to?(handler)
-              value = parsed_node.send(handler)
-            else
-              value = parsed_node.text_value.send(handler)
-            end
-          end
+          value = apply_mapping(handler, parsed_node)
         else
           value = parsed_node.send(attrib)
         end
@@ -80,9 +74,25 @@ module TireSwing
       end
     end
 
+    def apply_mapping(handler, parsed_node)
+      # TODO add in handler for arrays of methods to call in order
+      if handler.kind_of?(Proc)
+        value = handler.call(parsed_node)
+      else
+        # TODO need to add more error checking
+        if parsed_node.respond_to?(handler)
+          value = parsed_node.send(handler)
+        else
+          value = parsed_node.text_value.send(handler)
+        end
+      end
+    end
+
     def extract_value(value)
       if value.respond_to?(:build)
-        value.build
+        node = value.build
+        node.parent = self if node.kind_of?(Node)
+        node
       elsif value.kind_of?(Treetop::Runtime::SyntaxNode)
         value.text_value
       else

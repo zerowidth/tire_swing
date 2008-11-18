@@ -2,6 +2,13 @@ require File.join(File.dirname(__FILE__), %w[spec_helper])
 
 describe TireSwing::Node do
 
+  it "has a parent accessor" do
+    node = TireSwing::Node.new
+    node.parent.should be_nil
+    node.parent = :parent
+    node.parent.should == :parent
+  end
+
   describe ".create" do
     it "returns a class that inherits from TireSwing::Node" do
       klass = TireSwing::Node.create
@@ -120,6 +127,16 @@ describe TireSwing::Node do
           TireSwing::Node.create(:foo => :children).new(@top).foo.should == ["foo", 1, "child"]
         end
 
+        it "assigns the parent node if the child node is also a TireSwing node" do
+          @top.should_receive(:child).and_return(@child)
+          node = TireSwing::Node.create(:foo => :child)
+          child_node = TireSwing::Node.new
+          @child.should_receive(:build).and_return(child_node)
+          new_top = node.new(@top)
+          new_top.foo.should == child_node
+          child_node.parent.should == new_top
+        end
+
       end
 
       it "yields the syntax node instance if a named attribute is a lambda" do
@@ -141,7 +158,7 @@ describe TireSwing::Node do
 
   describe "#clone" do
     it "does a deep copy of a node" do
-      # can't leave this as an anonymous class, marshal dump/load don't like it
+      # can't leave this as an anonymous class, marshal dump/load doesn't like it
       MyNode = TireSwing::Node.create
       node = MyNode.new
       node.clone.should_not eql node

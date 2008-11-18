@@ -2,15 +2,16 @@ module TireSwing::NodeDefinition
 
   module ModuleMethods
 
-    # Returns a NodeCreator to act as a stand-in for a normal node class definition.
+    # Returns a NodeCreator to act as a stand-in for a node class in the treetop parser.
     # According to the treetop metagrammar, node class definitions can have more than just a class in them.
-    # For example:
+    #
+    # Given the initial grammar,
     #
     #   rule variable
     #     [a-z]+ <Variable>
     #   end
     #
-    # Instead, use this method to use AST node auto-build functionality. Given
+    # you might instead use use the AST node auto-build functionality. Given
     #
     #   node :variable, :value => :text_value
     #
@@ -20,6 +21,8 @@ module TireSwing::NodeDefinition
     #     [a-z]+ <node(:variable)>
     #   end
     #
+    # and voila, you'll magically have a Variable node with a #value attribute containing the text value.
+    #
     # Also note that you can specify alternate namespaces:
     #
     #   module AST
@@ -28,15 +31,15 @@ module TireSwing::NodeDefinition
     #
     #   <AST.create_node(:variable)>
     #
-    # When you're using the parser extension:
+    # and when you're using the parser extension, tell the parser about the namespace
     #
     #   TireSwing.parses_grammar(Grammar, AST)
     #
-    # you can use
+    # and then you can use the shortest possible syntax,
     #
     #   <node(...)>
     #
-    # Which is an instance method wrapper for the create_node class method.
+    # which is an instance method wrapper for the create_node class method.
     #
     def create_node(name)
       TireSwing::NodeCreator.new(name, const_get(name.to_s.camelize))

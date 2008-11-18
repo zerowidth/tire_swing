@@ -1,9 +1,11 @@
 == 1.0.4 / 2008-11-17
 
-* 3 minor enhancements
+* 4 minor enhancements
   * Updated array traversal code to be recursive by default
   * Updated visitor code to use class instances instead of class-level methods for greater flexibility
   * Updated error handling to include parsing context in error message
+  * Added clone method for deep copy of AST
+  * Updated node building to set node parents for easier traversal of the AST
 
 == 1.0.0 / 2008-06-29
 
