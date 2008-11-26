@@ -42,7 +42,7 @@ module TireSwing::NodeDefinition
     # which is an instance method wrapper for the create_node class method.
     #
     def create_node(name)
-      TireSwing::NodeCreator.new(name, const_get(name.to_s.camelize))
+      TireSwing::NodeCreator.new(name, const_get(name.to_s.camel_case))
     end
 
     # Define a node.
@@ -114,7 +114,7 @@ module TireSwing::NodeDefinition
     #
     def node(name, *attribute_names, &blk)
       klass = TireSwing::Node.create *attribute_names
-      const_set name.to_s.camelize, klass
+      const_set name.to_s.camel_case, klass
       klass.class_eval &blk if block_given?
     end
 

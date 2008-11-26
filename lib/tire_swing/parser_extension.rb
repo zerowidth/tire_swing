@@ -29,7 +29,7 @@ module TireSwing
   #
   # You can specify an alternate module which contains the AST if desired.
   def self.parses_grammar(grammar, ast=nil)
-    parser = (grammar.to_s + "Parser").constantize
+    parser = Extlib::Inflection.constantize(grammar.to_s + "Parser")
     ast ||= grammar
     parser.module_eval do
       extend ParserExtension

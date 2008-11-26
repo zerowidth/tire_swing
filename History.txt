@@ -1,3 +1,8 @@
+== master
+
+* 1 minor enhancement
+  * Switched dependency on ActiveSupport out for the lighter-weight Extlib
+
 == 1.0.4 / 2008-11-17
 
 * 4 minor enhancements

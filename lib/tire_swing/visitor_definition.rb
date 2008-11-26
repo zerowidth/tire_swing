@@ -45,7 +45,7 @@ module TireSwing::VisitorDefinition
     #
     def visitor(name, &blk)
       klass = Class.new(TireSwing::Visitor)
-      const_set name.to_s.camelize, klass
+      const_set name.to_s.camel_case, klass
       klass.class_eval &blk if block_given?
     end
   end

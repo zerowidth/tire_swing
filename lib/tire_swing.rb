@@ -44,9 +44,9 @@ module TireSwing
 end  # module TireSwing
 
 require "rubygems"
-gem "activesupport"
+gem "extlib"
 gem "attributes"
 
-%w(active_support/core_ext/string attributes treetop).each { |lib| require lib }
+%w(extlib/inflection extlib/string attributes treetop).each { |lib| require lib }
 
 TireSwing.require_all_libs_relative_to __FILE__
