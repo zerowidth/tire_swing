@@ -1,10 +1,10 @@
-== master
+== 0.0.5 / 2008-11-26
 
 * 2 minor enhancements
   * Switched dependency on ActiveSupport out for the lighter-weight Extlib
   * Updated array_of to remove recursive flag and add support for extracting more than one kind of node
 
-== 1.0.4 / 2008-11-17
+== 0.0.4 / 2008-11-17
 
 * 4 minor enhancements
   * Updated array traversal code to be recursive by default
@@ -13,7 +13,7 @@
   * Added clone method for deep copy of AST
   * Updated node building to set node parents for easier traversal of the AST
 
-== 1.0.0 / 2008-06-29
+== 0.0.1 / 2008-06-29
 
 * 1 major enhancement
   * Birthday!
