@@ -76,20 +76,18 @@ describe TireSwing::NodeDefinition do
       TestNodes.array_of(:foo).call(node).should == [node]
     end
 
-    it "filters recursively by default" do
+    it "filters recursively" do
       b = mock_syntax_node("b", :elements => ["stuff", "whatever"], :node_to_build => :foo)
       a = mock_syntax_node("a", :elements => ["jkl", b], :node_to_build => :foo)
       top = mock_syntax_node("top", :elements => ["asdf", a], :node_to_build => :foo)
-      TestNodes.array_of(:foo, true).call(top).should == [top, a, b]
+      TestNodes.array_of(:foo).call(top).should == [top, a, b]
     end
 
-    describe "with the recursive flag set to false" do
-      it "returns a lambda that does not filter recursively" do
-        b = mock_syntax_node("b", :elements => ["stuff", "whatever"], :node_to_build => :foo)
-        a = mock_syntax_node("a", :elements => ["jkl", b], :node_to_build => :foo)
-        top = mock_syntax_node("top", :elements => ["asdf", a], :node_to_build => :foo)
-        TestNodes.array_of(:foo, false).call(top).should == [top, a]
-      end
+    it "filters for more than one kind of node" do
+      c = mock_syntax_node("c", :elements => [], :node_to_build => :foo)
+      b = mock_syntax_node("b", :elements => [c], :node_to_build => :bar)
+      a = mock_syntax_node("a", :elements => [b], :node_to_build => :foo)
+      TestNodes.array_of(:foo, :bar).call(a).should == [a, b, c]
     end
 
     describe "with a block provided" do

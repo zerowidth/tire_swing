@@ -31,7 +31,7 @@ module TireSwing::NodeDefinition
     #
     #   <AST.create_node(:variable)>
     #
-    # and when you're using the parser extension, tell the parser about the namespace
+    # but when you're using the parser extension, tell the parser about the namespace
     #
     #   TireSwing.parses_grammar(Grammar, AST)
     #
@@ -39,7 +39,7 @@ module TireSwing::NodeDefinition
     #
     #   <node(...)>
     #
-    # which is an instance method wrapper for the create_node class method.
+    # which is an instance method wrapper for this create_node module method.
     #
     def create_node(name)
       TireSwing::NodeCreator.new(name, const_get(name.to_s.camel_case))
@@ -131,15 +131,14 @@ module TireSwing::NodeDefinition
     #
     #   [assignment, [assignment, [assignment]]]
     #
-    # If you specify that the array is recursive, it will retrieve all nested child nodes, no matter how deep, which
-    # provide the kind of node you want.
+    # array_of(:assignment) will retrieve all of the assignment nodes from that recursive tree.
     #
-    # If you provide a block, the filtered result will be yielded to the block and returned as the final result.
+    # If you provide a block, the filtered syntax node will be yielded to the block and returned as the final result.
     #
-    def array_of(kind, recursive = true, &blk)
+    def array_of(*kinds, &block)
       lambda do |node|
-        result = NodeFilters.filter(node, kind, recursive)
-        blk ? result.map(&blk) : result
+        result = NodeFilters.filter(node, kinds)
+        block ? result.map(&block) : result
       end
     end
 
@@ -176,15 +175,11 @@ module TireSwing::NodeDefinition
 
   module NodeFilters
 
-    def self.filter(node, kind, recursive)
+    def self.filter(node, kinds)
       nodes = []
       children = node.respond_to?(:elements) ? (node.elements || []) : []
-      if recursive
-        nodes << node if node.respond_to?(:node_to_build) && node.node_to_build == kind
-        children.each { |child| nodes.push *filter(child, kind, true) }
-      else
-        nodes = ([node] + children).select { |n| n.respond_to?(:node_to_build) && n.node_to_build == kind }
-      end
+      nodes << node if node.respond_to?(:node_to_build) && kinds.include?(node.node_to_build)
+      children.each { |child| nodes.push *filter(child, kinds) }
       nodes
     end
 

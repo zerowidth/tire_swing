@@ -28,7 +28,7 @@ module Lists
   module AST
     include TireSwing::NodeDefinition
     node :lists, :elements, :lists => extract(:list)
-    node :list, :elements, :numbers => array_of(:number, true) { |num| num.text_value.to_i }
+    node :list, :elements, :numbers => array_of(:number) { |num| num.text_value.to_i }
     node :number # placeholder
   end
 
