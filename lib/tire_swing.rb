@@ -47,6 +47,9 @@ require "rubygems"
 gem "extlib"
 gem "attributes"
 
-%w(extlib/inflection extlib/string attributes treetop).each { |lib| require lib }
+require "extlib/string"
+require "extlib/inflection" unless "".respond_to?(:pluralize) # activesupport compatibility mode to prevent interference
+
+%w(attributes treetop).each { |lib| require lib }
 
 TireSwing.require_all_libs_relative_to __FILE__
