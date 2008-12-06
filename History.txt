@@ -1,3 +1,9 @@
+== 0.0.6 / 2008-12-05
+
+* 2 minor enhancements
+  * activesupport "compatibility mode" to work around extlib inflections messing with rails
+  * Added error handling for NoMethodErrors when building the AST
+
 == 0.0.5 / 2008-11-26
 
 * 2 minor enhancements

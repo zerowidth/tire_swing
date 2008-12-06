@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{tire_swing}
-  s.version = "0.0.5"
+  s.version = "0.0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Nathan Witmer"]
-  s.date = %q{2008-11-26}
+  s.date = %q{2008-12-05}
   s.description = %q{Simple node and visitor definitions for Treetop grammars.}
   s.email = %q{nwitmer at gmail dot com}
   s.extra_rdoc_files = ["History.txt", "README.txt", "spec/fixtures/assignments.txt"]
