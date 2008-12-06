@@ -32,7 +32,7 @@ module TireSwing
     # use either extlib or activesupport, if that's loaded instead
     parser = grammar.to_s + "Parser"
     parser = if defined?(Extlib::Inflection)
-      Extlib::Inflection.constantize
+      Extlib::Inflection.constantize(parser)
     else
       parser.constantize
     end
