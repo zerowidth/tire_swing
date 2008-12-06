@@ -48,11 +48,6 @@ describe TireSwing::Node do
         n = @node.new
         lambda { n.lhs }.should raise_error(RuntimeError, "no value given for lhs")
       end
-
-      it "returns a class with an attribute mapping" do
-        @node.attribute_mapping.should == {"lhs" => :left_value, "rhs" => :right_value}
-      end
-
     end
 
     describe "with a mix of named attributes and hash attributes" do
@@ -63,11 +58,6 @@ describe TireSwing::Node do
       it "creates a class with attributes matching the named attributes and hash keys" do
         @node.attributes.should == %w(one two three)
       end
-
-      it "updates the attribute mapping" do
-        @node.attribute_mapping.should == {"three" => :value}
-      end
-
     end
 
   end
@@ -150,6 +140,28 @@ describe TireSwing::Node do
           node = TireSwing::Node.create(:value => :to_i)
           @top.should_receive(:text_value).and_return("1234")
           node.new(@top).value.should == 1234
+        end
+      end
+
+      describe "for a node lacking the required named attribute" do
+        it "raises a parse exception including the text value of the node" do
+          node = TireSwing::Node.create :foo
+          @top.should_receive(:foo).and_raise(NoMethodError.new("undefined method `foo'..."))
+          @top.stub!(:text_value).and_return("value")
+          lambda do
+            node.new(@top)
+          end.should raise_error(TireSwing::ParseError, /expected.*"value".*foo/)
+        end
+      end
+
+      describe "for a node lacking the defined method for a name/method mapping" do
+        it "raises an exception including the text value of the node" do
+          node = TireSwing::Node.create :foo => :bar
+          @top.should_receive(:bar).and_raise(NoMethodError.new("undefined method `bar'..."))
+          @top.stub!(:text_value).and_return("value")
+          lambda do
+            node.new(@top)
+          end.should raise_error(TireSwing::ParseError, /expected.*"value".*bar/)
         end
       end
 

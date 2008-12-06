@@ -1,7 +1,7 @@
 module TireSwing
   class ParseError < StandardError
     attr_reader :parser
-    def initialize(message, parser)
+    def initialize(message, parser=nil)
       @parser = parser
       super(message)
     end

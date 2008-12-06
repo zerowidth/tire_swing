@@ -15,12 +15,9 @@ module TireSwing
         attribs.each do |attrib|
           case attrib
           when Symbol, String
-            attribute(attrib.to_s) { raise "no value given for #{attrib}" }
+            add_mapping(attrib, attrib)
           when Hash
-            attrib.each do |name, symbol|
-              attribute(name.to_s) { raise "no value given for #{name}" }
-              attribute_mapping[name.to_s] = symbol
-            end
+            attrib.each { |name, symbol| add_mapping(name, symbol) }
           end
         end
       end
@@ -31,6 +28,12 @@ module TireSwing
       @attribute_mapping ||= {}
     end
 
+    def self.add_mapping(name, value)
+      attribute(name.to_s) { raise "no value given for #{name}" }
+      attribute_mapping[name.to_s] = value
+    end
+
+    # keep track of where this node lives in the tree
     attr_accessor :parent
 
     # Instantiate a node.
@@ -56,13 +59,9 @@ module TireSwing
     protected
 
     # Auto-builds this node using the provided parsed node and the defined attributes and mapped attributes.
-    def build_from_parsed_node(parsed_node)
+    def build_from_parsed_node(node)
       attributes.each do |attrib|
-        if handler = mapping(attrib)
-          value = apply_mapping(handler, parsed_node)
-        else
-          value = parsed_node.send(attrib)
-        end
+        value = apply_mapping(attrib, node)
 
         value = if value.kind_of?(Array)
           value.map { |val| extract_value(val) }
@@ -74,18 +73,28 @@ module TireSwing
       end
     end
 
-    def apply_mapping(handler, parsed_node)
-      # TODO add in handler for arrays of methods to call in order
+    def apply_mapping(attrib, node)
+      handler = mapping_for(attrib)
+
       if handler.kind_of?(Proc)
-        value = handler.call(parsed_node)
+        value = handler.call(node)
       else
-        # TODO need to add more error checking
-        if parsed_node.respond_to?(handler)
-          value = parsed_node.send(handler)
-        else
-          value = parsed_node.text_value.send(handler)
-        end
+        send_handler_method handler, node
       end
+
+    end
+
+    def send_handler_method(handler, node)
+      if node.respond_to?(handler)
+        value = node.send(handler)
+      else
+        value = node.text_value.send(handler)
+      end
+    rescue NoMethodError
+      context = node.text_value.split("\n")
+      context = context.size > 1 ? context.first + "..." : context
+      raise ParseError,
+        %Q{expected node containing "#{context}" or its text value to respond to  #{handler.inspect}}
     end
 
     def extract_value(value)
@@ -104,7 +113,7 @@ module TireSwing
       self.class.attributes
     end
 
-    def mapping(name)
+    def mapping_for(name)
       self.class.attribute_mapping[name]
     end
 
